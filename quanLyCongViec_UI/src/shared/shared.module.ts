@@ -18,11 +18,19 @@ import { LayoutStoreService } from './layout/layout-store.service';
 import { BusyDirective } from './directives/busy.directive';
 import { EqualValidator } from './directives/equal-validator.directive';
 
+// primeNG
+import {AccordionModule} from 'primeng/accordion';
+import {ButtonModule} from 'primeng/button';
+import { TableModule } from 'primeng/table';
+
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        ButtonModule,
+        AccordionModule,
+        TableModule,
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -40,7 +48,11 @@ import { EqualValidator } from './directives/equal-validator.directive';
         AbpModalFooterComponent,
         LocalizePipe,
         BusyDirective,
-        EqualValidator
+        EqualValidator,
+
+        // primeNG
+        TableModule,
+        ButtonModule,
     ]
 })
 export class SharedModule {

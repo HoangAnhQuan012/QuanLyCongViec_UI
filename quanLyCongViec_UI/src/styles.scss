@@ -1,0 +1,24 @@
+$lenght: 1000;
+
+@for $i from 1 through $lenght {
+    .mt-#{$i} {
+        margin-top: $i + px !important;
+    }
+
+    .mr-#{$i} {
+        margin-right: $i + px !important;
+    }
+
+    .ml-#{$i} {
+        margin-left: $i + px !important;
+    }
+
+    .mb-#{$i} {
+        margin-bottom: $i + px !important;
+    }
+
+    .custom-td-#{$i} {
+        flex: 0 0 $i + px !important;
+        word-break: break-all;
+    }
+}
