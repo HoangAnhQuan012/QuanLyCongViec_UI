@@ -9,6 +9,8 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { JobManagementComponent } from './job-management/job-management.component';
+import { ProjectDetailsComponent } from './job-management/project-details/project-details.component';
+import { CreateProjectComponent } from './job-management/create-project/create-project.component';
 
 @NgModule({
     imports: [
@@ -24,6 +26,8 @@ import { JobManagementComponent } from './job-management/job-management.componen
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
                     { path: 'job-management', component: JobManagementComponent, canActivate: [AppRouteGuard] },
+                    { path: 'job-management/project-details/:id', component: ProjectDetailsComponent, canActivate: [AppRouteGuard] },
+                    { path: 'job-management/create-project', component: CreateProjectComponent, canActivate: [AppRouteGuard]}
                 ]
             }
         ])

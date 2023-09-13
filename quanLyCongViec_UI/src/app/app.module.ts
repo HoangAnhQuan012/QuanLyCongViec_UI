@@ -31,6 +31,7 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 
 // job management
 import { JobManagementComponent } from './job-management/job-management.component';
+import { ProjectDetailsComponent } from './job-management/project-details/project-details.component';
 // layout
 import { HeaderComponent } from './layout/header.component';
 import { HeaderLeftNavbarComponent } from './layout/header-left-navbar.component';
@@ -71,7 +72,8 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
         SidebarLogoComponent,
         SidebarUserPanelComponent,
         SidebarMenuComponent,
-        JobManagementComponent
+        JobManagementComponent,
+        ProjectDetailsComponent,
    ],
     imports: [
         CommonModule,

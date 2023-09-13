@@ -5,28 +5,37 @@
           <h4>Quản lý công việc</h4>
         </div>
       </div>
-      <div class="row justify-content-end mr-7 mb-10">
-        <button type="button" class="btn btn-primary">Thêm mới</button>
+      <div class="row justify-content-end mr-55 mb-10">
+        <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
       </div>
       <div class="container mb-5">
-        <p-table #dt [value]="records" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [filterDelay]="0" styleClass="p-datatable-gridlines">
+        <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="load($event)" [rowHover]="true" [rows]="5"
+          [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
+          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          [filterDelay]="0" styleClass="p-datatable-gridlines" (sortFunction)="customSort($event)" [customSort]="true">
           <ng-template pTemplate="header">
             <tr>
-              <th></th>
+              <th style="width: 20px;"></th>
               <th>STT</th>
-              <th>Dự Án</th>
-              <th>Khánh hàng</th>
-              <th>Trạng Thái</th>
-              <th>Thời gian bắt đầu</th>
-              <th>Thời gian kết thúc</th>
-              <th>Quản lý dự án</th>
+              <th pSortableColumn="name">Dự Án <p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="description">Khánh hàng <p-sortIcon field="description"></p-sortIcon></th>
+              <th pSortableColumn="status">Trạng Thái <p-sortIcon field="status"></p-sortIcon></th>
+              <th pSortableColumn="created">Thời gian bắt đầu <p-sortIcon field="created"></p-sortIcon></th>
+              <th pSortableColumn="modified">Thời gian kết thúc <p-sortIcon field="modified"></p-sortIcon></th>
+              <th pSortableColumn="email">Quản lý dự án <p-sortIcon field="email"></p-sortIcon></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-record let-i="rowIndex">
             <tr>
-              <td></td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-transparent btn-action"
+                      type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v" (click)="ProjectDetails(record.id)"></i>
+                  </button>
+                </div>
+              </td>
               <td>{{ i + 1 }}</td>
               <td>{{ record.name }}</td>
               <td>{{ record.description }}</td>
