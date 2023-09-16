@@ -27,7 +27,7 @@
                 <div class="input-group-prepend">
                   <button type="button"
                     class="btn bg-blue"
-                    (click)="getDataPage(1)">
+                    (click)="getDataPage()">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
@@ -36,33 +36,27 @@
                   name="keyword"
                   [placeholder]="'SearchWithThreeDot' | localize"
                   [(ngModel)]="keyword"
-                  (keyup.enter)="getDataPage(1)" />
+                  (keyup.enter)="getDataPage()" />
               </div>
             </div>
           </div>
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered"
-              [busy]="isTableLoading">
-              <thead class="bg-light">
+            <p-table #dt [value]="roles" styleClass="p-datatable-gridlines" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0">
+              <ng-template pTemplate="header">
+
                 <tr>
                   <th>{{ "RoleName" | localize }}</th>
                   <th>{{ "DisplayName" | localize }}</th>
                   <th style="width: 200px;">{{ "Actions" | localize }}</th>
                 </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="
-                  let role of roles
-                    | paginate
-                      : {
-                          id: 'server',
-                          itemsPerPage: pageSize,
-                          currentPage: pageNumber,
-                          totalItems: totalItems
-                        }
-                ">
+              </ng-template>
+            <ng-template pTemplate="body" let-role>
+                <tr>
                   <td>{{ role.name }}</td>
                   <td>{{ role.displayName }}</td>
                   <td>
@@ -80,11 +74,18 @@
                     </button>
                   </td>
                 </tr>
-              </tbody>
-            </table>
+              </ng-template>
+
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="10">Data not found</td>
+                </tr>
+              </ng-template>
+
+            </p-table>
           </div>
         </div>
-        <div class="card-footer table-card-footer bg-light border-top">
+        <!-- <div class="card-footer table-card-footer bg-light border-top">
           <div class="row">
             <div class="col-sm-4 col-12 text-sm-left text-center">
               <button class="btn btn-secondary"
@@ -94,7 +95,7 @@
             </div>
             <div class="col-sm-4 col-12 text-center">
               <p class="mb-0 my-2">
-                {{ "TotalRecordsCount" | localize: totalItems }}
+                {{ "TotalRecordsCount" | localize: totalRecords }}
               </p>
             </div>
             <div class="col-sm-4 col-12">
@@ -105,7 +106,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

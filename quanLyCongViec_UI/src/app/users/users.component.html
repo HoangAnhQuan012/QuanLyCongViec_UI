@@ -2,14 +2,15 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                     <h1>{{ "Users" | localize }}</h1>
                 </div>
-                <div class="col-6 text-right">
-                    <a href="javascript:;" class="btn bg-blue" (click)="createUser()">
+                <div class="col-md-6 text-right">
+                    <!-- <a href="javascript:;" class="btn bg-blue" (click)="createUser()">
                         <i class="fa fa-plus-square"></i>
                         {{ "Create" | localize }}
-                    </a>
+                    </a> -->
+                    <button type="button" class="btn btn-primary" (click)="createUser()"><i class="fa fa-plus-square"></i> Create</button>
                 </div>
             </div>
         </div>
@@ -24,10 +25,9 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button
-                                            type="button"
-                                            class="btn bg-blue"
-                                            (click)="getDataPage(1)"
-                                    >
+                                        type="button"
+                                        class="btn bg-blue"
+                                        (click)="getDataPage()">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -37,18 +37,17 @@
                                         name="keyword"
                                         [placeholder]="'SearchWithThreeDot' | localize"
                                         [(ngModel)]="keyword"
-                                        (keyup.enter)="getDataPage(1)"
+                                        (keyup.enter)="getDataPage()"
                                 />
                                 <div class="input-group-append">
                                     <button
                                             type="button"
                                             class="btn btn-default"
-                                            (click)="advancedFiltersVisible = !advancedFiltersVisible"
-                                    >
+                                            (click)="advancedFiltersVisible = !advancedFiltersVisible">
                                         <i
-                                                class="fas"
-                                                [class.fa-angle-up]="advancedFiltersVisible"
-                                                [class.fa-angle-down]="!advancedFiltersVisible"
+                                            class="fas"
+                                            [class.fa-angle-up]="advancedFiltersVisible"
+                                            [class.fa-angle-down]="!advancedFiltersVisible"
                                         ></i>
                                     </button>
                                 </div>
@@ -121,7 +120,7 @@
                             <button
                                     type="button"
                                     class="btn bg-blue"
-                                    (click)="getDataPage(1)"
+                                    (click)="getDataPage()"
                             >
                                 {{ "Search" | localize }}
                             </button>
@@ -137,8 +136,12 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered" [busy]="isTableLoading">
-                            <thead class="bg-light">
+                        <p-table #dt [value]="users" styleClass="p-datatable-gridlines" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
+                        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
+                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [filterDelay]="0">
+                            <!-- <thead class="bg-light"> -->
+                            <ng-template pTemplate="header">
                             <tr>
                                 <th>{{ "UserName" | localize }}</th>
                                 <th>{{ "FullName" | localize }}</th>
@@ -146,66 +149,61 @@
                                 <th>{{ "IsActive" | localize }}</th>
                                 <th style="width: 310px;">{{ "Actions" | localize }}</th>
                             </tr>
-                            </thead>
-                            <tbody>
-                            <tr
-                                    *ngFor="
-                  let user of users
-                    | paginate
-                      : {
-                          id: 'server',
-                          itemsPerPage: pageSize,
-                          currentPage: pageNumber,
-                          totalItems: totalItems
-                        }
-                "
-                            >
-                                <td>{{ user.userName }}</td>
-                                <td>{{ user.fullName }}</td>
-                                <td>{{ user.emailAddress }}</td>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input
-                                                type="checkbox"
-                                                class="custom-control-input"
-                                                disabled
-                                                [checked]="user.isActive"
-                                        />
-                                        <label class="custom-control-label"></label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button
-                                            type="button"
-                                            class="btn btn-sm bg-secondary"
-                                            (click)="editUser(user)"
-                                    >
-                                        <i class="fas fa-pencil-alt"></i>
-                                        {{ "Edit" | localize }}
-                                    </button>
-                                    <button
-                                            type="button"
-                                            class="btn btn-sm bg-danger mx-2"
-                                            (click)="delete(user)"
-                                    >
-                                        <i class="fas fa-trash"></i>
-                                        {{ "Delete" | localize }}
-                                    </button>
-                                    <button
-                                            type="button"
-                                            class="btn btn-sm bg-secondary"
-                                            (click)="resetPassword(user)"
-                                    >
-                                        <i class="fas fa-lock"></i>
-                                        {{ "ResetPassword" | localize }}
-                                    </button>
-                                </td>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-user>
+                                <tr>
+                                    <td>{{ user.userName }}</td>
+                                    <td>{{ user.fullName }}</td>
+                                    <td>{{ user.emailAddress }}</td>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input
+                                                    type="checkbox"
+                                                    class="custom-control-input"
+                                                    disabled
+                                                    [checked]="user.isActive"
+                                            />
+                                            <label class="custom-control-label"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button
+                                                type="button"
+                                                class="btn btn-sm bg-warning"
+                                                (click)="editUser(user)"
+                                        >
+                                            <i class="fas fa-pencil-alt"></i>
+                                            {{ "Edit" | localize }}
+                                        </button>
+                                        <button
+                                                type="button"
+                                                class="btn btn-sm bg-danger mx-2"
+                                                (click)="delete(user)"
+                                        >
+                                            <i class="fas fa-trash"></i>
+                                            {{ "Delete" | localize }}
+                                        </button>
+                                        <button
+                                                type="button"
+                                                class="btn btn-sm bg-secondary"
+                                                (click)="resetPassword(user)"
+                                        >
+                                            <i class="fas fa-lock"></i>
+                                            {{ "ResetPassword" | localize }}
+                                        </button>
+                                    </td>
+                                </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="10">Data not found</td>
                             </tr>
-                            </tbody>
-                        </table>
+                        </ng-template>
+
+                        </p-table>
                     </div>
                 </div>
-                <div class="card-footer table-card-footer bg-light border-top">
+                <!-- <div class="card-footer table-card-footer bg-light border-top">
                     <div class="row">
                         <div class="col-sm-4 col-12 text-sm-left text-center">
                             <button class="btn btn-secondary" (click)="refresh()">
@@ -214,7 +212,7 @@
                         </div>
                         <div class="col-sm-4 col-12 text-center">
                             <p class="mb-0 my-2">
-                                {{ "TotalRecordsCount" | localize: totalItems }}
+                                {{ "TotalRecordsCount" | localize: totalRecords }}
                             </p>
                         </div>
                         <div class="col-sm-4 col-12">
@@ -227,7 +225,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>

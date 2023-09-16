@@ -1,3 +1,42 @@
-<p>
-  create-project works!
-</p>
+<form class="form-horizontal" autocomplete="off" (ngSubmit)="save()">
+  <abp-modal-header [title]="'Thêm mới dự án'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <div class="modal-body fixed-modal-height">
+    <div class="row ui-fluid">
+      <div class="col-md-6">
+        <label for="">Quản lý dự án</label>
+        <input type="text" pInputText  class="form-control">
+      </div>
+
+      <div class="col-md-6">
+        <label for="">Tên dự án</label>
+        <input type="text" pInputText  class="form-control">
+      </div>
+    </div>
+
+    <div class="row ui-fluid">
+      <div class="col-md-6">
+        <label for="">Khách hàng</label>
+        <input type="text" pInputText  class="form-control">
+      </div>
+
+      <div class="col-md-6">
+        <label for="">Trạng thái</label>
+        <input type="text" pInputText  class="form-control">
+      </div>
+    </div>
+
+    <div class="row ui-fluid">
+      <div class="p-fluid p-grid p-formgrid">
+        <div class="p-field p-md-6">
+          <label for="startTime">Thời gian bắt đầu</label>
+          <p-calendar inputId="startTime"></p-calendar>
+      </div>
+      <div class="p-field p-md-6">
+        <label for="endTime">Thời gian kết thúc</label>
+        <p-calendar inputId="endTime"></p-calendar>
+    </div>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer [cancelLabel]="'Đóng'" (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

@@ -22,6 +22,9 @@ import { EqualValidator } from './directives/equal-validator.directive';
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule} from 'primeng/calendar';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
     imports: [
@@ -31,6 +34,9 @@ import { TableModule } from 'primeng/table';
         ButtonModule,
         AccordionModule,
         TableModule,
+        InputTextModule,
+        CalendarModule,
+        InputSwitchModule
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -53,6 +59,9 @@ import { TableModule } from 'primeng/table';
         // primeNG
         TableModule,
         ButtonModule,
+        InputTextModule,
+        CalendarModule,
+        InputSwitchModule
     ]
 })
 export class SharedModule {

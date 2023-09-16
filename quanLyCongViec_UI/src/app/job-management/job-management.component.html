@@ -1,11 +1,37 @@
 <div class="p-grid table-demo mt-15 ml-20 mr-15">
-    <div class="card">
-      <div class="p-col-12">
-        <div class="flex-header">
-          <h4>Quản lý công việc</h4>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <h1>Projects management</h1>
         </div>
       </div>
-      <div class="row justify-content-end mr-55 mb-10">
+    </div>
+  </section>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button
+                  type="button"
+                  class="btn bg-blue"
+                  (click)="load()">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                name="keyword"
+                [placeholder]="'SearchWithThreeDot' | localize"
+                [(ngModel)]="keyword"/>
+            </div>
+          </div>
+        </div>
+    </div>
+      <div class="row justify-content-end mt-10 mr-55 mb-10">
         <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
       </div>
       <div class="container mb-5">

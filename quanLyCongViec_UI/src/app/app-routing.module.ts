@@ -25,7 +25,8 @@ import { CreateProjectComponent } from './job-management/create-project/create-p
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
-                    { path: 'job-management', component: JobManagementComponent, canActivate: [AppRouteGuard] },
+                    { path: 'job-management', component: JobManagementComponent,
+                        data: { permission: 'Pages.QuanLyCongViec' }, canActivate: [AppRouteGuard] },
                     { path: 'job-management/project-details/:id', component: ProjectDetailsComponent, canActivate: [AppRouteGuard] },
                     { path: 'job-management/create-project', component: CreateProjectComponent, canActivate: [AppRouteGuard]}
                 ]

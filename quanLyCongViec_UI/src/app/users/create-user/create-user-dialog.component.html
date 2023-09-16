@@ -3,6 +3,7 @@
   autocomplete="off"
   #createUserModal="ngForm"
   (ngSubmit)="save()"
+  [formGroup]="form"
 >
   <abp-modal-header
     [title]="'CreateNewUser' | localize"
@@ -21,15 +22,11 @@
               class="form-control"
               name="name"
               id="name"
+              formControlName="name"
               required
               maxlength="32"
-              [(ngModel)]="user.name"
-              #nameModel="ngModel"
-              #nameEl
             />
-            <abp-validation-summary
-              [control]="nameModel"
-              [controlEl]="nameEl"
+            <abp-validation-summary [control]="form.get('name')"
             ></abp-validation-summary>
           </div>
         </div>
@@ -45,13 +42,9 @@
               id="surname"
               required
               maxlength="32"
-              [(ngModel)]="user.surname"
-              #surnameModel="ngModel"
-              #surnameEl
+              formControlName="surname"
             />
-            <abp-validation-summary
-              [control]="surnameModel"
-              [controlEl]="surnameEl"
+            <abp-validation-summary [control]="form.get('surname')"
             ></abp-validation-summary>
           </div>
         </div>
@@ -68,13 +61,9 @@
               required
               minlength="2"
               maxlength="32"
-              [(ngModel)]="user.userName"
-              #userNameModel="ngModel"
-              #userNameEl
+              formControlName="userName"
             />
-            <abp-validation-summary
-              [control]="userNameModel"
-              [controlEl]="userNameEl"
+            <abp-validation-summary [control]="form.get('userName')"
             ></abp-validation-summary>
           </div>
         </div>
@@ -92,14 +81,9 @@
               maxlength="32"
               validateEqual="confirmPassword"
               reverse="true"
-              pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$"
-              [(ngModel)]="user.password"
-              #passwordModel="ngModel"
-              #passwordEl
+              formControlName="password"
             />
-            <abp-validation-summary
-              [control]="passwordModel"
-              [controlEl]="passwordEl"
+            <abp-validation-summary [control]="form.get('password')"
               [customValidationErrors]="passwordValidationErrors"
             ></abp-validation-summary>
           </div>
@@ -118,13 +102,9 @@
               maxlength="32"
               validateEqual="password"
               reverse="false"
-              ngModel
-              #confirmPasswordModel="ngModel"
-              #confirmPasswordEl
+              formControlName="confirmPassword"
             />
-            <abp-validation-summary
-              [control]="confirmPasswordModel"
-              [controlEl]="confirmPasswordEl"
+            <abp-validation-summary [control]="form.get('confirmPassword')"
               [customValidationErrors]="confirmPasswordValidationErrors"
             ></abp-validation-summary>
           </div>
@@ -141,14 +121,9 @@
               id="emailAddress"
               required
               maxlength="256"
-              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
-              [(ngModel)]="user.emailAddress"
-              #emailAddressModel="ngModel"
-              #emailAddressEl
+              formControlName="emailAddress"
             />
-            <abp-validation-summary
-              [control]="emailAddressModel"
-              [controlEl]="emailAddressEl"
+            <abp-validation-summary [control]="form.get('emailAddress')"
             ></abp-validation-summary>
           </div>
         </div>
@@ -158,14 +133,8 @@
           </label>
           <div class="col-md-9">
             <div class="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                name="isActive"
-                id="isActive"
-                [(ngModel)]="user.isActive"
-              />
-              <label class="custom-control-label mt-2" for="isActive"></label>
+              <p-inputSwitch formControlName="TinhTrang" name="isActive"></p-inputSwitch>
+              <!-- <label class="custom-control-label mt-2" for="isActive"></label> -->
             </div>
           </div>
         </div>

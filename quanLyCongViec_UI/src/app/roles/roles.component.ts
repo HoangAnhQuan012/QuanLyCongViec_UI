@@ -13,6 +13,8 @@ import {
 } from '@shared/service-proxies/service-proxies';
 import { CreateRoleDialogComponent } from './create-role/create-role-dialog.component';
 import { EditRoleDialogComponent } from './edit-role/edit-role-dialog.component';
+import { AppComponentBase } from '@shared/app-component-base';
+import { LazyLoadEvent } from 'primeng/api';
 
 class PagedRolesRequestDto extends PagedRequestDto {
   keyword: string;
@@ -22,9 +24,11 @@ class PagedRolesRequestDto extends PagedRequestDto {
   templateUrl: './roles.component.html',
   animations: [appModuleAnimation()]
 })
-export class RolesComponent extends PagedListingComponentBase<RoleDto> {
+export class RolesComponent extends AppComponentBase {
   roles: RoleDto[] = [];
   keyword = '';
+  loading = false;
+  totalRecords: number;
 
   constructor(
     injector: Injector,
@@ -34,23 +38,38 @@ export class RolesComponent extends PagedListingComponentBase<RoleDto> {
     super(injector);
   }
 
-  list(
-    request: PagedRolesRequestDto,
-    pageNumber: number,
-    finishedCallback: Function
-  ): void {
-    request.keyword = this.keyword;
+  // list(
+  //   request: PagedRolesRequestDto,
+  //   pageNumber: number,
+  //   finishedCallback: Function
+  // ): void {
+  //   request.keyword = this.keyword;
 
+  //   this._rolesService
+  //     .getAll(request.keyword, request.skipCount, request.maxResultCount)
+  //     .pipe(
+  //       finalize(() => {
+  //         finishedCallback();
+  //       })
+  //     )
+  //     .subscribe((result: RoleDtoPagedResultDto) => {
+  //       this.roles = result.items;
+  //       this.showPaging(result, pageNumber);
+  //     });
+  // }
+
+  getDataPage(lazyLoad?: LazyLoadEvent) {
+    this.loading = true;
     this._rolesService
-      .getAll(request.keyword, request.skipCount, request.maxResultCount)
+      .getAll(this.keyword, lazyLoad?.first, lazyLoad?.rows)
       .pipe(
         finalize(() => {
-          finishedCallback();
+          this.loading = false;
         })
       )
-      .subscribe((result: RoleDtoPagedResultDto) => {
+      .subscribe((result) => {
         this.roles = result.items;
-        this.showPaging(result, pageNumber);
+        this.totalRecords = result.totalCount;
       });
   }
 
@@ -65,7 +84,8 @@ export class RolesComponent extends PagedListingComponentBase<RoleDto> {
             .pipe(
               finalize(() => {
                 abp.notify.success(this.l('SuccessfullyDeleted'));
-                this.refresh();
+                // this.refresh();
+                this.getDataPage();
               })
             )
             .subscribe(() => {});
@@ -104,7 +124,8 @@ export class RolesComponent extends PagedListingComponentBase<RoleDto> {
     }
 
     createOrEditRoleDialog.content.onSave.subscribe(() => {
-      this.refresh();
+      // this.refresh();
+      this.getDataPage();
     });
   }
 }

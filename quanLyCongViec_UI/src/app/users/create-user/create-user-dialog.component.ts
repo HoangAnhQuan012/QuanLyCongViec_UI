@@ -14,6 +14,7 @@ import {
   RoleDto
 } from '@shared/service-proxies/service-proxies';
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   templateUrl: './create-user-dialog.component.html'
@@ -40,17 +41,20 @@ export class CreateUserDialogComponent extends AppComponentBase
   ];
 
   @Output() onSave = new EventEmitter<any>();
+  form: FormGroup;
 
   constructor(
     injector: Injector,
     public _userService: UserServiceProxy,
-    public bsModalRef: BsModalRef
+    public bsModalRef: BsModalRef,
+    private _formBuilder: FormBuilder
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
     this.user.isActive = true;
+    this.createForm();
 
     this._userService.getRoles().subscribe((result) => {
       this.roles = result.items;
@@ -86,11 +90,25 @@ export class CreateUserDialogComponent extends AppComponentBase
     return roles;
   }
 
+  createForm() {
+    this.form = this._formBuilder.group({
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      userName: ['', Validators.required],
+      password: ['', Validators.compose([Validators.required, Validators.pattern(/(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/)])],
+      confirmPassword: ['', Validators.compose([
+        Validators.required, Validators.pattern(/(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/)
+      ])],
+      emailAddress: ['', Validators.compose([Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$/)])],
+      TinhTrang: [true],
+    });
+  }
+
   save(): void {
     this.saving = true;
 
     this.user.roleNames = this.getCheckedRoles();
-
+    this.getValueForSave();
     this._userService.create(this.user).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
@@ -101,5 +119,14 @@ export class CreateUserDialogComponent extends AppComponentBase
         this.saving = false;
       }
     );
+  }
+
+  private getValueForSave() {
+    this.user.name = this.form.controls.name.value;
+    this.user.surname = this.form.controls.surname.value;
+    this.user.userName = this.form.controls.userName.value;
+    this.user.password = this.form.controls.password.value;
+    this.user.emailAddress = this.form.controls.emailAddress.value;
+    this.user.isActive = this.form.controls.TinhTrang.value;
   }
 }

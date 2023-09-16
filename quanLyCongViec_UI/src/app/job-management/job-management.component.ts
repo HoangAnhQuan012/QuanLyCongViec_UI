@@ -14,6 +14,7 @@ export class JobManagementComponent implements OnInit {
   @ViewChild('dt') table: Table;
   loading = false;
   totalRecords: number;
+  keyword = '';
 
   records = [
     { id: 1 , name: 'Job 1', description: 'Job 1 description', status: 'Active',
@@ -70,7 +71,7 @@ export class JobManagementComponent implements OnInit {
     });
 }
 
-  load(Lazy: LazyLoadEvent) {
+  load(Lazy?: LazyLoadEvent) {
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
