@@ -18,6 +18,9 @@ import { LayoutStoreService } from './layout/layout-store.service';
 import { BusyDirective } from './directives/busy.directive';
 import { EqualValidator } from './directives/equal-validator.directive';
 
+// ngx-bootstrap
+import { NgxDropzoneModule } from 'ngx-dropzone';
+
 // primeNG
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
@@ -25,6 +28,9 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule} from 'primeng/calendar';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {CheckboxModule} from 'primeng/checkbox';
+import {InputNumberModule} from 'primeng/inputnumber';
 
 @NgModule({
     imports: [
@@ -36,7 +42,11 @@ import {InputSwitchModule} from 'primeng/inputswitch';
         TableModule,
         InputTextModule,
         CalendarModule,
-        InputSwitchModule
+        InputSwitchModule,
+        NgxDropzoneModule,
+        AutoCompleteModule,
+        CheckboxModule,
+        InputNumberModule
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -56,12 +66,18 @@ import {InputSwitchModule} from 'primeng/inputswitch';
         BusyDirective,
         EqualValidator,
 
+        // ngx-bootstrap
+        NgxDropzoneModule,
+
         // primeNG
         TableModule,
         ButtonModule,
         InputTextModule,
         CalendarModule,
-        InputSwitchModule
+        InputSwitchModule,
+        AutoCompleteModule,
+        CheckboxModule,
+        InputNumberModule
     ]
 })
 export class SharedModule {

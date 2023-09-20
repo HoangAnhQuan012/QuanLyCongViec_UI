@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { AppComponentBase } from '@shared/app-component-base';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -8,6 +9,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent extends AppComponentBase implements OnInit {
+  control: FormControl;
+  filesAllImg: File[] = [];
+  filesAllFile: File[] = [];
+  demoDto: any;
 
   constructor(
     injector: Injector,
@@ -18,6 +23,20 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
 
   ngOnInit() {
   }
+
+  xoaListHA() {}
+
+  xoaListFile() {}
+
+  onSelectAllHA(event) {}
+
+  onSelectAllFile(event) {}
+
+  onRemoveAllHA(event) {}
+
+  onRemoveAllFile(event) {}
+
+  onDownloadFile(event) {}
 
   save() {
     this.notify.success('Saved successfully');

@@ -1,3 +1,129 @@
-<p>
-  project-details works!
-</p>
+<div class="p-grid table-demo mt-15 ml-20 mr-15">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <h1>Projects Details</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button
+                  type="button"
+                  class="btn bg-blue"
+                  (click)="load($event)">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                name="keyword"
+                [placeholder]="'SearchWithThreeDot' | localize"
+                [(ngModel)]="keyword"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-20 mb-20">
+          <button type="button" class="btn btn-primary" style="margin-left: 46.5%;" (click)="workReport()">Work report</button>
+        </div>
+
+        <div class="container mb-5">
+          <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="load($event)" [rowHover]="true" [rows]="5"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0" styleClass="p-datatable-gridlines" dataKey="id">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 20px; padding: 0;"></th>
+                <th style="width: 40px;">STT</th>
+                <th style="width: 100px;">Date</th>
+                <th style="width: 200px;">Sprint</th>
+                <th style="width: 200px;">Module</th>
+                <th style="width: 70px;">Time</th>
+                <th style="width: 100px;">Status</th>
+                <th style="width: 150px;"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-record let-i="rowIndex" let-expanded="expanded">
+              <tr>
+                <td style="width: 20px; padding: 0 0 0 10px;">
+                  <button type="button" pButton pRipple [pRowToggler]="record" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+              </td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ record.id }}</td>
+                <td>{{ record.description }}</td>
+                <td>{{ record.status }}</td>
+                <td>{{ record.created }}</td>
+                <td>{{ record.modified }}</td>
+                <td style="text-align: center;">
+                  <button class="btn btn-primary mr-5" type="button">
+                    <i class="pi pi-eye"></i>
+                  </button>
+                  <button class="btn btn-warning mr-5" type="button">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger" type="button">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="rowexpansion" let-record>
+              <tr>
+                <td colspan="8">
+                  <div class="p-p-3">
+                    <p-table [value]="record.product" dataKey="id">
+                      <ng-template pTemplate="header">
+                        <th>STT</th>
+                        <th>Job</th>
+                        <th>Time</th>
+                        <th>Kind of job</th>
+                        <th>Type</th>
+                        <th>Attached files</th>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rec let-i="rowIndex">
+                        <tr>
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ rec.id }}</td>
+                          <td>{{ rec.description }}</td>
+                          <td>{{ rec.status }}</td>
+                          <td>{{ rec.created }}</td>
+                          <td>{{ rec.modified }}</td>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template pTemplate="footer">
+                        <tr>
+                          <td>Total</td>
+                          <td>...h</td>
+                        </tr>
+                      </ng-template>
+
+                    </p-table>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="10">Không có dữ liệu</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="row mt-10" style="justify-content: center;">
+          <button type="button" class="btn btn-secondary" (click)="backLine()">Back</button>
+        </div>
+      </div>
+    </div>
+</div>

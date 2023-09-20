@@ -1,0 +1,12 @@
+::ng-deep {
+    app-project-details {
+        .p-paginator-bottom {
+            height: 60px;
+        }
+
+        .p-paginator-bottom.p-paginator.p-component.ng-star-inserted {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}

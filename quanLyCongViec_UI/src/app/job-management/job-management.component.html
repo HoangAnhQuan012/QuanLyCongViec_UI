@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-6">
-          <h1>Projects management</h1>
+          <h1>Projects</h1>
         </div>
       </div>
     </div>
@@ -32,6 +32,7 @@
         </div>
     </div>
       <div class="row justify-content-end mt-10 mr-55 mb-10">
+        <button type="button" class="btn btn-success mr-10" (click)="ExportExcel()"><i class="fa fa-download"></i> Export</button>
         <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
       </div>
       <div class="container mb-5">
@@ -57,8 +58,8 @@
                 <div class="dropdown">
                   <button class="btn btn-sm btn-transparent btn-action"
                       type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v" (click)="ProjectDetails(record.id)"></i>
+                      aria-haspopup="true" aria-expanded="false" (click)="ProjectDetails(record.id)">
+                      <i class="fas fa-ellipsis-v"></i>
                   </button>
                 </div>
               </td>

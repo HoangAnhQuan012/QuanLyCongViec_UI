@@ -1,0 +1,129 @@
+<form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
+  <abp-modal-header [title]="'LogWork'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <div class="modal-body fixed-modal-height-full">
+    <div class="row ui-fluid">
+      <div class="col-md-12">
+        <div class="row ui-fluid">
+          <div class="col-md-12 text-center">
+            <h4>Dự án quản lý công việc</h4>
+          </div>
+          <div class="p-fluid p-grid p-formgrid mt-2 ml-2" style="display: flex;">
+              <div class="p-md-4">
+                <label>Sprint *</label>
+                <p-autoComplete formControlName="sprint" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+              </div>
+              <div class="p-md-4">
+                <label>Module *</label>
+                <p-autoComplete formControlName="module" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+              </div>
+              <div class="p-md-4">
+                <label>Declaration date *</label>
+                <p-calendar formControlName="declarationDate" dateFormat="dd/mm/yy" [styleClass]="'custom-height-width'" showIcon="true"></p-calendar>
+              </div>
+          </div>
+        </div>
+
+        <div class="row ui-fluid">
+          <div class="col-md-12">
+            <div class="text-right">
+              <label>Add: 0h</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-10 mt-20" formArrayName="subJobs">
+          <div *ngFor="let item of getControls(); let i=index">
+            <div [formGroupName]="i">
+              <fieldset style="border: 1px solid #000; padding: 10px; border-radius: 5px;">
+                <legend style="width: unset; font-size: 15px; padding: 0 5px 0 5px;">
+                  Job 1
+                </legend>
+                <div>
+                  <div class="row ui-fluid">
+                    <div class="col-md-12 flex-end">
+                      <button class="bg-transparent" type="button" aria-label="close" (click)="removeJob(i)"><span aria-hidden="true"><i class="fa fa-close"></i></span></button>
+                    </div>
+                    <div class="p-fluid p-grid p-formgrid mr-6 ml-3">
+                      <div class="p-col-12" style="display: flex;">
+                        <div class="p-md-6 mt-8" style="width: 406px;">
+                          <label>Job</label>
+                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true"
+                            formControlName="job"></p-autoComplete>
+                        </div>
+                        <div class="p-md-2" style="padding-right: 3px !important;">
+                          <label>Kind of job</label>
+                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true" formControlName="kindOfJob"></p-autoComplete>
+                        </div>
+                        <div class="p-md-1 mt-4">
+                          <label>Type</label>
+                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true" formControlName="type"></p-autoComplete>
+                        </div>
+                        <div class="p-md-1">
+                          <label>On Site</label>
+                          <p-checkbox formControlName="onSite"></p-checkbox>
+                        </div>
+                        <div class="p-md-1">
+                          <label>Hours</label>
+                          <p-inputNumber formControlName="hours" mode="decimal"></p-inputNumber>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div style="text-align: right;">
+                        <button type="button" class="btn btn-danger" [disabled]="filesAllFile.length === 0"
+                            (click)="xoaListFile()"><i class="fas fa-trash"></i>
+                            <span style="margin-left: 5px;">Delete all</span></button>
+                    </div>
+
+                    <div class="ui-fluid row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Attached files</label>
+                                <ngx-dropzone (change)="onSelectAllFile($event)"
+                                    [multiple]="true" accept=".doc,.docx,application/pdf, application/vnd.ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                    <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
+                                    <ngx-dropzone-preview *ngFor="let f of filesAllFile"
+                                        (removed)="onRemoveAllFile(f)">
+                                        <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                                    </ngx-dropzone-preview>
+                                </ngx-dropzone>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="list-unstyled">
+                                <li *ngFor="let file of demoDto?.listFile">
+                                    <a (click)="onDownloadFile(file.linkFile)" class="text-primary">{{file.tenFile}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="row ui-fluid">
+                        <div class="col-md-12">
+                          <label>Note</label>
+                          <textarea formControlName="note" class="form-control" rows="4"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="row text-center mt-2 ng-star-inserted">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary" style="border-radius: 15px;" (click)="AddItem()" iconPos="left"
+              pButton pRipple>
+              <i class="fa fa-plus"></i><span class="ml-5">Add Job</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer [cancelLabel]="'Close'" (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

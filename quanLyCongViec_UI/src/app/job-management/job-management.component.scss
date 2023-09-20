@@ -5,3 +5,17 @@
     margin-left: 20px;
     margin-bottom: 10px;
 }
+
+
+::ng-deep {
+    app-job-management {
+        .p-paginator-bottom {
+            height: 60px;
+        }
+
+        .p-paginator-bottom.p-paginator.p-component.ng-star-inserted {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}

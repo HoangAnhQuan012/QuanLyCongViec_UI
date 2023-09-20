@@ -87,12 +87,14 @@ export class JobManagementComponent implements OnInit {
     this._showCreateDialog(id);
   }
 
+  ExportExcel() {}
+
   private _showCreateDialog(id?: number): void {
     let createDialog: BsModalRef;
     createDialog = this.modalService.show(
       CreateProjectComponent,
       {
-        class: 'modal-lg',
+        class: 'modal-xl',
         ignoreBackdropClick: true,
         initialState: {
           id
