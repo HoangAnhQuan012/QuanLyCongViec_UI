@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { WorkReportComponent } from '../workReport/workReport.component';
+import { AddLogworkComponent } from './add-logwork/add-logwork.component';
 
 @Component({
   selector: 'app-project-details',
@@ -63,6 +64,14 @@ export class ProjectDetailsComponent implements OnInit {
     this.showWorkReport(this.id);
   }
 
+  addLogWork() {
+    this.showLogWork(this.id);
+  }
+
+  backLine() {
+    this._router.navigate(['/app/job-management']);
+  }
+
   private showWorkReport(id?: number) {
     let workReport: BsModalRef;
     workReport = this._modalService.show(
@@ -74,12 +83,19 @@ export class ProjectDetailsComponent implements OnInit {
         }
       }
     );
-
   }
 
-  // tslint:disable-next-line:member-ordering
-  backLine() {
-    this._router.navigate(['/app/job-management']);
+  private showLogWork(id?: number) {
+    let logWork: BsModalRef;
+    logWork = this._modalService.show(
+      AddLogworkComponent,
+      {
+        class: 'modal-xl',
+        initialState: {
+          id
+        }
+      }
+    );
   }
 
 }

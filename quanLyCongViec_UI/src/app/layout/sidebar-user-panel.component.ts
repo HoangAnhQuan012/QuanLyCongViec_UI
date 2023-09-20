@@ -11,8 +11,7 @@ import { AppComponentBase } from '@shared/app-component-base';
   templateUrl: './sidebar-user-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SidebarUserPanelComponent extends AppComponentBase
-  implements OnInit {
+export class SidebarUserPanelComponent extends AppComponentBase implements OnInit {
   shownLoginName = '';
 
   constructor(injector: Injector) {

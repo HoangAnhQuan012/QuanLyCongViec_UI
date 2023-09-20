@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div>
                         <p-table #dt [value]="users" styleClass="p-datatable-gridlines" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
                         [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"

@@ -31,11 +31,16 @@
           </div>
         </div>
 
-        <div class="row mt-20 mb-20">
+        <div class="row mt-20 mb-15">
           <button type="button" class="btn btn-primary" style="margin-left: 46.5%;" (click)="workReport()">Work report</button>
         </div>
 
-        <div class="container mb-5">
+        <div class="row ui-fluid flex-end mb-10 mr-0">
+          <button class="btn btn-success mr-5" type="button"><i class="fa fa-download"></i>Export</button>
+          <button class="btn btn-primary" type="button" (click)="addLogWork()"><i class="fa fa-plus mr-5"></i>Add</button>
+        </div>
+
+        <div class="table mb-5">
           <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="load($event)" [rowHover]="true" [rows]="5"
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -54,8 +59,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-record let-i="rowIndex" let-expanded="expanded">
               <tr>
-                <td style="width: 20px; padding: 0 0 0 10px;">
-                  <button type="button" pButton pRipple [pRowToggler]="record" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                <td style="width: 20px; padding: 10px 5px 5px 5px; text-align: center;">
+                  <button type="button" pButton pRipple [pRowToggler]="record" class="p-button-text p-button-rounded p-button-plain"
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                    style="margin-top: 5px;"></button>
               </td>
                 <td>{{ i + 1 }}</td>
                 <td>{{ record.id }}</td>

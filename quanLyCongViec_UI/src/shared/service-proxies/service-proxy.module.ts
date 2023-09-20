@@ -13,6 +13,9 @@ import * as ApiServiceProxies from './service-proxies';
         ApiServiceProxies.TokenAuthServiceProxy,
         ApiServiceProxies.AccountServiceProxy,
         ApiServiceProxies.ConfigurationServiceProxy,
+        ApiServiceProxies.LookupTableServiceProxy,
+        ApiServiceProxies.UnitsManagementServiceProxy,
+        ApiServiceProxies.ProjectManagementServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

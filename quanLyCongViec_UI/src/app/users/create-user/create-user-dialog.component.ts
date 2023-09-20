@@ -11,13 +11,17 @@ import { AppComponentBase } from '@shared/app-component-base';
 import {
   UserServiceProxy,
   CreateUserDto,
-  RoleDto
+  RoleDto,
+  LookupTableServiceProxy,
+  LookupTableDto
 } from '@shared/service-proxies/service-proxies';
 import { AbpValidationError } from '@shared/components/validation/abp-validation.api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  templateUrl: './create-user-dialog.component.html'
+  selector: 'app-create-user-dialog',
+  templateUrl: './create-user-dialog.component.html',
+  styleUrls: ['./create-user-dialog.component.scss'],
 })
 export class CreateUserDialogComponent extends AppComponentBase
   implements OnInit {
@@ -42,12 +46,14 @@ export class CreateUserDialogComponent extends AppComponentBase
 
   @Output() onSave = new EventEmitter<any>();
   form: FormGroup;
+  UnitsItems: LookupTableDto[] = [];
 
   constructor(
     injector: Injector,
     public _userService: UserServiceProxy,
     public bsModalRef: BsModalRef,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private lookupTableService: LookupTableServiceProxy
   ) {
     super(injector);
   }
@@ -101,7 +107,25 @@ export class CreateUserDialogComponent extends AppComponentBase
       ])],
       emailAddress: ['', Validators.compose([Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$/)])],
       TinhTrang: [true],
+      unit: ['', Validators.required]
     });
+  }
+
+  searchUnit(event) {
+    const query = event.query;
+    this.lookupTableService.getAllUnitsLookupTable().subscribe((result) => {
+      this.UnitsItems = this.filterUnit(query, result);
+    });
+  }
+
+  filterUnit(query, UnitsItems: LookupTableDto[]): any[] {
+    const filtered: any[] = [];
+    for (const iterator of UnitsItems) {
+      if (iterator.displayName.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) === 0) {
+        filtered.push(iterator);
+      }
+    }
+    return filtered;
   }
 
   save(): void {
@@ -127,6 +151,7 @@ export class CreateUserDialogComponent extends AppComponentBase
     this.user.userName = this.form.controls.userName.value;
     this.user.password = this.form.controls.password.value;
     this.user.emailAddress = this.form.controls.emailAddress.value;
+    this.user.unitId = this.form.controls.unit.value.id;
     this.user.isActive = this.form.controls.TinhTrang.value;
   }
 }

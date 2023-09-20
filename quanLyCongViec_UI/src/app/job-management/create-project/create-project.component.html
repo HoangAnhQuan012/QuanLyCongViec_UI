@@ -1,5 +1,5 @@
 <form class="form-horizontal" autocomplete="off" (ngSubmit)="save()">
-  <abp-modal-header [title]="'Thêm mới dự án'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <abp-modal-header [title]="'Add a new project'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <div class="modal-body fixed-modal-height">
     <div class="row ui-fluid">
       <div class="col-md-6">
@@ -8,7 +8,7 @@
       </div>
 
       <div class="col-md-6">
-        <label for="">Tên dự án *</label>
+        <label for="">Project name *</label>
         <input type="text" pInputText  class="form-control">
       </div>
     </div>
@@ -40,56 +40,25 @@
 
     <div class="row ui-fluid">
       <div class="col-md-12">
-        <label>Ghi chú</label>
+        <label>Note</label>
         <textarea class="form-control" rows="4"></textarea>
       </div>
     </div>
 
-    <div class="mt-10" style="text-align: right;">
-      <button type="button" class="btn btn-danger" [disabled]="filesAllImg.length === 0" (click)="xoaListHA()">
-        <i class="fas fa-trash"></i><span style="margin-left: 5px;">Xóa tất cả</span>
-      </button>
-    </div>
-
-  <div class="ui-fluid row">
-      <div class="col-md-12">
-          <div class="form-group">
-              <label>Hình ảnh</label>
-              <ngx-dropzone [accept]="'.png, .jpg'"
-                  (change)="onSelectAllHA($event)" [multiple]="true">
-                  <ngx-dropzone-label style="font-size: 13px !important;">Chọn file...</ngx-dropzone-label>
-                  <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of filesAllImg"
-                      [file]="f" (removed)="onRemoveAllHA(f)">
-                      <ngx-dropzone-label title="{{f.name}}">{{ f.name }}
-                      </ngx-dropzone-label>
-                  </ngx-dropzone-image-preview>
-              </ngx-dropzone>
-          </div>
-      </div>
-      <div class="col-md-12">
-          <ul class="list-unstyled">
-              <li *ngFor="let file of demoDto?.listHinhAnh">
-                  <a [title]="file.tenFile" (click)="onDownloadFile(file.linkFile)"
-                      class="text-primary">{{ file.tenFile }}</a>
-              </li>
-          </ul>
-      </div>
-  </div>
-
-  <div style="text-align: right;">
+  <div class="mt-10" style="text-align: right;">
       <button type="button" class="btn btn-danger" [disabled]="filesAllFile.length === 0"
           (click)="xoaListFile()"><i class="fas fa-trash"></i>
-          <span style="margin-left: 5px;">Xóa tất cả</span></button>
+          <span style="margin-left: 5px;">Delete all</span></button>
   </div>
 
   <div class="ui-fluid row">
       <div class="col-md-12">
           <div class="form-group">
-              <label>Tài liệu đính kèm</label>
+              <label>Attached files</label>
               <ngx-dropzone (change)="onSelectAllFile($event)"
                   [multiple]="true" accept=".doc,.docx,application/pdf, application/vnd.ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                  <ngx-dropzone-label style="font-size: 13px !important;">Chọn file...</ngx-dropzone-label>
+                  <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
                   <ngx-dropzone-preview *ngFor="let f of filesAllFile"
                       (removed)="onRemoveAllFile(f)">
                       <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>

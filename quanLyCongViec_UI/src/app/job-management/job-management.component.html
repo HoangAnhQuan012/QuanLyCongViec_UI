@@ -35,7 +35,7 @@
         <button type="button" class="btn btn-success mr-10" (click)="ExportExcel()"><i class="fa fa-download"></i> Export</button>
         <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
       </div>
-      <div class="container mb-5">
+      <div class="table mb-5">
         <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="load($event)" [rowHover]="true" [rows]="5"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
