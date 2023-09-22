@@ -11,6 +11,7 @@ import {
 } from 'abp-ng2-module';
 
 import { AppSessionService } from '@shared/session/app-session.service';
+import { Table } from 'primeng/table';
 
 export abstract class AppComponentBase {
 
@@ -51,6 +52,10 @@ export abstract class AppComponentBase {
 
         args.unshift(localizedText);
         return abp.utils.formatString.apply(this, args);
+    }
+
+    getSortField(table?: Table): string {
+        return table && table.sortField ? (table.sortField + (table.sortOrder === 1 ? ' ASC' : ' DESC')) : undefined;
     }
 
     isGranted(permissionName: string): boolean {

@@ -31,6 +31,8 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {FieldsetModule} from 'primeng/fieldset';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
     imports: [
@@ -46,7 +48,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         NgxDropzoneModule,
         AutoCompleteModule,
         CheckboxModule,
-        InputNumberModule
+        InputNumberModule,
+        FieldsetModule,
+        DropdownModule
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -77,7 +81,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         InputSwitchModule,
         AutoCompleteModule,
         CheckboxModule,
-        InputNumberModule
+        InputNumberModule,
+        FieldsetModule,
+        DropdownModule
     ]
 })
 export class SharedModule {

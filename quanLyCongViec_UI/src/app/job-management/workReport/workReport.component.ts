@@ -13,6 +13,8 @@ export class WorkReportComponent implements OnInit {
   filesAllFile: File[] = [];
   demoDto: any = {};
   dateFormat = 'dd/MM/yyyy';
+  hours: number;
+  isModified = false;
 
   constructor(
     public bsModalRef: BsModalRef,

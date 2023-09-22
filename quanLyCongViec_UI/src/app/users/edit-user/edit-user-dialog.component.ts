@@ -50,11 +50,11 @@ export class EditUserDialogComponent extends AppComponentBase
     this.createForm();
     this._userService.get(this.id).subscribe((result) => {
       this.user = result;
+      this.setValueForEdit();
       this._userService.getRoles().subscribe((result2) => {
         this.roles = result2.items;
         this.setInitialRolesStatus();
       });
-      this.setValueForEdit();
     });
 
     this._lookupTableService.getAllUnitsLookupTable().subscribe((res) => {
@@ -119,8 +119,8 @@ export class EditUserDialogComponent extends AppComponentBase
   save(): void {
     this.saving = true;
 
+    this.getValueForSave();
     this.user.roleNames = this.getCheckedRoles();
-
     this._userService.update(this.user).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
@@ -133,13 +133,23 @@ export class EditUserDialogComponent extends AppComponentBase
     );
   }
 
+  private getValueForSave() {
+    this.user.id = this.id;
+    this.user.name = this.formData.controls.name.value;
+    this.user.surname = this.formData.controls.surname.value;
+    this.user.userName = this.formData.controls.userName.value;
+    this.user.emailAddress = this.formData.controls.emailAddress.value;
+    this.user.isActive = this.formData.controls.isActive.value;
+    this.user.unitId = this.formData.controls.unit.value.id;
+    this.user.unitName = this.formData.controls.unit.value.displayName;
+  }
+
   private setValueForEdit() {
     this.formData.controls.name.setValue(this.user.name);
     this.formData.controls.surname.setValue(this.user.surname);
     this.formData.controls.userName.setValue(this.user.userName);
     this.formData.controls.emailAddress.setValue(this.user.emailAddress);
     this.formData.controls.isActive.setValue(this.user.isActive);
-    this.formData.controls.unit.setValue(this.user.unitName);
-
+    this.formData.controls.unit.value.displayName.setValue(this.user.unitName);
   }
 }

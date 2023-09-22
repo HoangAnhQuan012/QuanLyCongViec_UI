@@ -1,34 +1,40 @@
 <form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
-  <abp-modal-header [title]="'Add a new logwork'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <abp-modal-header [title]="'Add new logwork'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <div class="modal-body fixed-modal-height">
     <div class="row ui-fluid">
       <div class="col-md-6">
         <label>PM *</label>
         <input type="text" pInputText class="form-control" [disabled]="true" formControlName="pm">
+        <abp-validation-summary [control]="formData.get('pm')"></abp-validation-summary>
       </div>
       <div class="col-md-6">
         <label>Sprint *</label>
         <input type="text" pInputText class="form-control" formControlName="sprint">
+        <abp-validation-summary [control]="formData.get('sprint')"></abp-validation-summary>
       </div>
     </div>
     <div class="row ui-fluid">
       <div class="col-md-6">
         <label>Module *</label>
         <input type="text" pInputText class="form-control" formControlName="module">
+        <abp-validation-summary [control]="formData.get('module')"></abp-validation-summary>
       </div>
       <div class="col-md-6">
         <label>Job *</label>
         <input type="text" pInputText class="form-control" formControlName="job">
+        <abp-validation-summary [control]="formData.get('job')"></abp-validation-summary>
       </div>
     </div>
     <div class="row ui-fluid">
       <div class="col-md-6">
         <label>Kind of job *</label>
         <input type="text" pInputText class="form-control" formControlName="kindOfJob">
+        <abp-validation-summary [control]="formData.get('kindOfJob')"></abp-validation-summary>
       </div>
       <div class="col-md-6">
         <label>Type *</label>
         <input type="text" pInputText class="form-control" formControlName="type">
+        <abp-validation-summary [control]="formData.get('type')"></abp-validation-summary>
       </div>
     </div>
     <div class="row ui-fluid">

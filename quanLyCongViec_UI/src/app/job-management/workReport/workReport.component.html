@@ -11,14 +11,18 @@
               <div class="p-md-4">
                 <label>Sprint *</label>
                 <p-autoComplete formControlName="sprint" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+                <abp-validation-summary [control]="formData.get('sprint')"></abp-validation-summary>
               </div>
               <div class="p-md-4">
                 <label>Module *</label>
                 <p-autoComplete formControlName="module" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+                <abp-validation-summary [control]="formData.get('module')"></abp-validation-summary>
               </div>
               <div class="p-md-4">
                 <label>Declaration date *</label>
-                <p-calendar formControlName="declarationDate" dateFormat="dd/mm/yy" [styleClass]="'custom-height-width'" showIcon="true"></p-calendar>
+                <p-calendar formControlName="declarationDate" dateFormat="dd/mm/yy"
+                  [styleClass]="'custom-height-width'" showIcon="true"></p-calendar>
+                <abp-validation-summary [control]="formData.get('declarationDate')"></abp-validation-summary>
               </div>
           </div>
         </div>
@@ -26,7 +30,7 @@
         <div class="row ui-fluid">
           <div class="col-md-12">
             <div class="text-right">
-              <label>Add: 0h</label>
+              <label>Add: {{ hours }}</label>
             </div>
           </div>
         </div>

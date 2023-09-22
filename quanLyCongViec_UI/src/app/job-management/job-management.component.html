@@ -17,7 +17,7 @@
                 <button
                   type="button"
                   class="btn bg-blue"
-                  (click)="load()">
+                  (click)="getDataPage()">
                   <i class="fas fa-search"></i>
                 </button>
               </div>
@@ -26,7 +26,7 @@
                 class="form-control"
                 name="keyword"
                 [placeholder]="'SearchWithThreeDot' | localize"
-                [(ngModel)]="keyword"/>
+                [(ngModel)]="keyword" (keyup.enter)="getDataPage()"/>
             </div>
           </div>
         </div>
@@ -36,20 +36,20 @@
         <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
       </div>
       <div class="table mb-5">
-        <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="load($event)" [rowHover]="true" [rows]="5"
+        <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          [filterDelay]="0" styleClass="p-datatable-gridlines" (sortFunction)="customSort($event)" [customSort]="true">
+          [filterDelay]="0" styleClass="p-datatable-gridlines" (sortFunction)="getDataPage($event)" [customSort]="true">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 20px;"></th>
               <th>STT</th>
-              <th pSortableColumn="name">Dự Án <p-sortIcon field="name"></p-sortIcon></th>
-              <th pSortableColumn="description">Khánh hàng <p-sortIcon field="description"></p-sortIcon></th>
+              <th pSortableColumn="projectName">Dự Án <p-sortIcon field="projectName"></p-sortIcon></th>
+              <th pSortableColumn="customer">Khánh hàng <p-sortIcon field="customer"></p-sortIcon></th>
               <th pSortableColumn="status">Trạng Thái <p-sortIcon field="status"></p-sortIcon></th>
-              <th pSortableColumn="created">Thời gian bắt đầu <p-sortIcon field="created"></p-sortIcon></th>
-              <th pSortableColumn="modified">Thời gian kết thúc <p-sortIcon field="modified"></p-sortIcon></th>
-              <th pSortableColumn="email">Quản lý dự án <p-sortIcon field="email"></p-sortIcon></th>
+              <th pSortableColumn="startDate">Thời gian bắt đầu <p-sortIcon field="startDate"></p-sortIcon></th>
+              <th pSortableColumn="endDate">Thời gian kết thúc <p-sortIcon field="endDate"></p-sortIcon></th>
+              <th pSortableColumn="projectManagerName">Quản lý dự án <p-sortIcon field="projectManagerName"></p-sortIcon></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-record let-i="rowIndex">
@@ -64,12 +64,12 @@
                 </div>
               </td>
               <td>{{ i + 1 }}</td>
-              <td>{{ record.name }}</td>
-              <td>{{ record.description }}</td>
+              <td>{{ record.projectName }}</td>
+              <td>{{ record.customer }}</td>
               <td>{{ record.status }}</td>
-              <td>{{ record.created }}</td>
-              <td>{{ record.modified }}</td>
-              <td>{{ record.email }}</td>
+              <td>{{ record.startDate | date:'dd/MM/yyyy'}}</td>
+              <td>{{ record.endDate | date:'dd/MM/yyyy' }}</td>
+              <td>{{ record.projectManagerName }}</td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">

@@ -73,11 +73,13 @@
             {{ "Unit" | localize }}
           </label>
           <div class="col-md-9">
-            <p-autoComplete [dropdown]="true" [suggestions]="UnitsItems"
+            <!-- <p-autoComplete [dropdown]="true" [suggestions]="UnitsItems"
               [forceSelection]="true" [size]="30" (completeMethod)="searchUnit($event)"
               field="displayName" name="unit" [styleClass]="'custom-height-width'"
               formControlName="unit">
-            </p-autoComplete>
+            </p-autoComplete> -->
+            <p-dropdown formControlName="unit" optionLabel="displayName" [styleClass]="'custom-height-width'"
+              [options]="UnitsItems" [showClear]="true" [filter]="true" resetFilterOnHide="true"></p-dropdown>
             <abp-validation-summary
               [control]="formData.get('unit')"
             ></abp-validation-summary>
