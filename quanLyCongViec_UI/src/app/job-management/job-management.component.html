@@ -44,12 +44,13 @@
             <tr>
               <th style="width: 20px;"></th>
               <th>STT</th>
-              <th pSortableColumn="projectName">Dự Án <p-sortIcon field="projectName"></p-sortIcon></th>
-              <th pSortableColumn="customer">Khánh hàng <p-sortIcon field="customer"></p-sortIcon></th>
-              <th pSortableColumn="status">Trạng Thái <p-sortIcon field="status"></p-sortIcon></th>
-              <th pSortableColumn="startDate">Thời gian bắt đầu <p-sortIcon field="startDate"></p-sortIcon></th>
-              <th pSortableColumn="endDate">Thời gian kết thúc <p-sortIcon field="endDate"></p-sortIcon></th>
-              <th pSortableColumn="projectManagerName">Quản lý dự án <p-sortIcon field="projectManagerName"></p-sortIcon></th>
+              <th pSortableColumn="projectName">Project <p-sortIcon field="projectName"></p-sortIcon></th>
+              <th pSortableColumn="customer">Customer <p-sortIcon field="customer"></p-sortIcon></th>
+              <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+              <th pSortableColumn="startDate">Start date <p-sortIcon field="startDate"></p-sortIcon></th>
+              <th pSortableColumn="endDate">End date <p-sortIcon field="endDate"></p-sortIcon></th>
+              <th pSortableColumn="projectManagerName">PM <p-sortIcon field="projectManagerName"></p-sortIcon></th>
+              <th></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-record let-i="rowIndex">
@@ -66,10 +67,18 @@
               <td>{{ i + 1 }}</td>
               <td>{{ record.projectName }}</td>
               <td>{{ record.customer }}</td>
-              <td>{{ record.status }}</td>
+              <td>{{ record.statusName }}</td>
               <td>{{ record.startDate | date:'dd/MM/yyyy'}}</td>
               <td>{{ record.endDate | date:'dd/MM/yyyy' }}</td>
               <td>{{ record.projectManagerName }}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-transparent btn-action mr-5" (click)="editProject(record.id)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-transparent btn-action" (click)="deleteProject(record.id)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">

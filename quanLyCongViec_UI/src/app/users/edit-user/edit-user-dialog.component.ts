@@ -150,6 +150,6 @@ export class EditUserDialogComponent extends AppComponentBase
     this.formData.controls.userName.setValue(this.user.userName);
     this.formData.controls.emailAddress.setValue(this.user.emailAddress);
     this.formData.controls.isActive.setValue(this.user.isActive);
-    this.formData.controls.unit.value.displayName.setValue(this.user.unitName);
+    this.formData.controls.unit.setValue(this.user.unitName);
   }
 }

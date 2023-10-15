@@ -33,7 +33,6 @@ import { ResetPasswordDialogComponent } from './users/reset-password/reset-passw
 import { JobManagementComponent } from './job-management/job-management.component';
 import { ProjectDetailsComponent } from './job-management/project-details/project-details.component';
 import { WorkReportComponent } from './job-management/workReport/workReport.component';
-import { AddLogworkComponent } from './job-management/project-details/add-logwork/add-logwork.component';
 // layout
 import { HeaderComponent } from './layout/header.component';
 import { HeaderLeftNavbarComponent } from './layout/header-left-navbar.component';
@@ -45,6 +44,9 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { CreateProjectComponent } from './job-management/create-project/create-project.component';
+import { AddSprintComponent } from './job-management/project-details/add-sprint/add-sprint.component';
+import { AddModuleComponent } from './job-management/project-details/add-module/add-module.component';
+import { AddJobComponent } from './job-management/project-details/add-job/add-job.component';
 
 @NgModule({
     declarations: [
@@ -79,7 +81,9 @@ import { CreateProjectComponent } from './job-management/create-project/create-p
         ProjectDetailsComponent,
         CreateProjectComponent,
         WorkReportComponent,
-        AddLogworkComponent,
+        AddSprintComponent,
+        AddModuleComponent,
+        AddJobComponent
    ],
     imports: [
         CommonModule,

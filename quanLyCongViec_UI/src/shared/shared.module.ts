@@ -18,6 +18,8 @@ import { LayoutStoreService } from './layout/layout-store.service';
 import { BusyDirective } from './directives/busy.directive';
 import { EqualValidator } from './directives/equal-validator.directive';
 
+import { FileDownloadService } from './file-download.service';
+
 // ngx-bootstrap
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
@@ -33,6 +35,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {FieldsetModule} from 'primeng/fieldset';
 import {DropdownModule} from 'primeng/dropdown';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
     imports: [
@@ -50,7 +53,8 @@ import {DropdownModule} from 'primeng/dropdown';
         CheckboxModule,
         InputNumberModule,
         FieldsetModule,
-        DropdownModule
+        DropdownModule,
+        MultiSelectModule
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -83,8 +87,10 @@ import {DropdownModule} from 'primeng/dropdown';
         CheckboxModule,
         InputNumberModule,
         FieldsetModule,
-        DropdownModule
-    ]
+        DropdownModule,
+        MultiSelectModule
+    ],
+    providers: [FileDownloadService]
 })
 export class SharedModule {
     static forRoot(): ModuleWithProviders<SharedModule> {

@@ -56,6 +56,10 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
     this._showCreateDialog(id);
   }
 
+  editProject(id?: number) {}
+
+  deleteProject(id?: number) {}
+
   ExportExcel() {}
 
   private _showCreateDialog(id?: number): void {
@@ -70,5 +74,9 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
         },
       }
     );
+
+    createDialog.content.onSave.subscribe(() => {
+      this.getDataPage();
+    });
   }
 }

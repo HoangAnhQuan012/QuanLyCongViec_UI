@@ -1,5 +1,5 @@
 <form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
-  <abp-modal-header [title]="'Add new project'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <abp-modal-header [title]="id ? 'Cập nhật: ' + demoDto.tenTS : 'Add new project'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <div class="modal-body fixed-modal-height">
     <div class="row ui-fluid">
       <div class="col-md-6">
@@ -10,7 +10,7 @@
 
       <div class="col-md-6">
         <label for="">Project name *</label>
-        <input type="text" pInputText  class="form-control" formControlName="projectName">
+        <input type="text" pInputText class="form-control" formControlName="projectName">
         <abp-validation-summary [control]="formData.get('projectName')"></abp-validation-summary>
       </div>
     </div>
@@ -18,13 +18,13 @@
     <div class="row ui-fluid">
       <div class="col-md-6">
         <label for="">Customer *</label>
-        <input type="text" pInputText  class="form-control" formControlName="customer">
+        <input type="text" pInputText class="form-control" formControlName="customer">
         <abp-validation-summary [control]="formData.get('customer')"></abp-validation-summary>
       </div>
 
       <div class="col-md-6">
         <label for="">Status *</label>
-        <input type="text" pInputText  class="form-control" formControlName="status">
+        <input type="text" pInputText class="form-control" formControlName="status">
         <abp-validation-summary [control]="formData.get('status')"></abp-validation-summary>
       </div>
     </div>
@@ -32,18 +32,25 @@
     <div class="p-fluid p-grid p-formgrid" style="display: flex;">
       <div class="p-col-4" style="padding-right: 7.5px;">
         <label>Start date *</label>
-        <p-calendar [styleClass]="'custom-height'" [dateFormat]="'dd/MM/yyyy'" [monthNavigator]="true" [yearNavigator]="true"
+        <p-calendar [styleClass]="'custom-height'" [dateFormat]="'dd/mm/yy'" [monthNavigator]="true" [yearNavigator]="true"
           [yearRange]="'2020:2030'" readonlyInput="true" formControlName="startDate"></p-calendar>
         <abp-validation-summary [control]="formData.get('startDate')"></abp-validation-summary>
       </div>
 
       <div class="p-col-4" style="padding-left: 7.5px;">
         <label>End time *</label>
-        <p-calendar [styleClass]="'custom-height'" [dateFormat]="'dd/MM/yyyy'"
-          [showTime]="true" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="'2020:2030'" readonlyInput="true"
+        <p-calendar [styleClass]="'custom-height'" [dateFormat]="'dd/mm/yy'" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="'2020:2030'" readonlyInput="true"
           formControlName="endDate"></p-calendar>
         <abp-validation-summary [control]="formData.get('endDate')"></abp-validation-summary>
       </div>
+    </div>
+
+    <div class="p-fluid p-grid p-form-grid" style="display: flex;">
+      <div class="p-col-4">
+        <label>Choose employees *</label>
+        <p-multiSelect [styleClass]="'custom-height'" [options]="userList" formControlName="employee" optionLabel="displayName"></p-multiSelect>
+      </div>
+      <div class="p-col-4"></div>
     </div>
 
     <div class="row ui-fluid">
@@ -54,8 +61,8 @@
     </div>
 
   <div class="mt-10" style="text-align: right;">
-      <button type="button" class="btn btn-danger" [disabled]="filesAllFile.length === 0"
-          (click)="xoaListFile()"><i class="fas fa-trash"></i>
+      <button type="button" class="btn btn-danger" [disabled]="attachedFile.length === 0"
+          (click)="deleteListFile()"><i class="fas fa-trash"></i>
           <span style="margin-left: 5px;">Delete all</span></button>
   </div>
 
@@ -67,7 +74,7 @@
                   [multiple]="true" accept=".doc,.docx,application/pdf, application/vnd.ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                   <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
-                  <ngx-dropzone-preview *ngFor="let f of filesAllFile"
+                  <ngx-dropzone-preview *ngFor="let f of attachedFile"
                       (removed)="onRemoveAllFile(f)">
                       <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
                   </ngx-dropzone-preview>

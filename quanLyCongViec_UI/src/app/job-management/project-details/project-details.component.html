@@ -36,8 +36,10 @@
         </div>
 
         <div class="row ui-fluid flex-end mb-10 mr-0">
-          <button class="btn btn-success mr-5" type="button"><i class="fa fa-download"></i>Export</button>
-          <button class="btn btn-primary" type="button" (click)="addLogWork()"><i class="fa fa-plus mr-5"></i>Add</button>
+          <button class="btn btn-success mr-5" type="button"><i class="fa fa-download mr-5"></i>Export</button>
+          <button class="btn btn-primary mr-5" type="button" (click)="addModule()"><i class="fa fa-plus mr-5"></i>Add Module</button>
+          <button class="btn btn-primary mr-5" type="button" (click)="addSprint()"><i class="fa fa-plus mr-5"></i>Add Sprint</button>
+          <button class="btn btn-primary" type="button" (click)="addJob()"><i class="fa fa-plus mr-5"></i>Add Job</button>
         </div>
 
         <div class="table mb-5">
@@ -123,7 +125,7 @@
 
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="10">Không có dữ liệu</td>
+                <td colspan="10">Data not found</td>
               </tr>
             </ng-template>
           </p-table>

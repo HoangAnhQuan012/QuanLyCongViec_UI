@@ -58,6 +58,28 @@ export abstract class AppComponentBase {
         return table && table.sortField ? (table.sortField + (table.sortOrder === 1 ? ' ASC' : ' DESC')) : undefined;
     }
 
+    showCreateMessage() {
+        this.notify.success('Saved Successfully!');
+    }
+
+    showUpdateMessage() {
+        this.notify.success('Updated Successfully!');
+    }
+
+    getLinkFile(res, fileName) {
+        if (res) {
+            const linkFile = res['result'][res['result'].findIndex(e => e.includes(fileName))];
+            if (linkFile.includes('\\'))
+            {
+                return '\\' + linkFile.split('\\').slice(-2).join('\\');
+            } else {
+                return '/' + linkFile.split('/').slice(-2).join('/');
+            }
+        } else {
+            return '';
+        }
+    }
+
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
     }

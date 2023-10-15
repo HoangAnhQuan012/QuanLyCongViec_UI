@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { WorkReportComponent } from '../workReport/workReport.component';
-import { AddLogworkComponent } from './add-logwork/add-logwork.component';
+import { AddModuleComponent } from './add-module/add-module.component';
+import { AddSprintComponent } from './add-sprint/add-sprint.component';
+import { AddJobComponent } from './add-job/add-job.component';
 
 @Component({
   selector: 'app-project-details',
@@ -16,35 +18,7 @@ export class ProjectDetailsComponent implements OnInit {
   routeSub: any;
   loading = false;
   totalRecords: 10;
-  records = [
-    { id: 1 , name: 'Job 1', description: 'Job 1 description', status: 'Active',
-      created: '2019-01-01', modified: '2019-01-01', email: 'mail@mail.com',
-      product: [
-        { id: 1, name: 'Product 1', description: 'Product 1 description', status: 'Active' },
-        { id: 2, name: 'Product 2', description: 'Product 2 description', status: 'Deactive' },
-        { id: 3, name: 'Product 3', description: 'Product 3 description', status: 'started' },
-      ] },
-    { id: 2, name: 'Job 2', description: 'Job 2 description', status: 'Deactive',
-      created: '2019-01-01', modified: '2019-01-01', email: 'mail@123.com' },
-    { id: 3, name: 'Job 3', description: 'Job 3 description', status: 'started',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 4, name: 'Job 4', description: 'Job 4 description', status: 'finished',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 5, name: 'Job 5', description: 'Job 5 description', status: 'ended',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 6, name: 'Job 6', description: 'Job 6 description', status: 'good',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 7, name: 'Job 7', description: 'Job 7 description', status: 'bad',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 8, name: 'Job 8', description: 'Job 8 description', status: 'great',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 9, name: 'Job 9', description: 'Job 9 description', status: 'excellent',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 10, name: 'Job 10', description: 'Job 10 description', status: 'Active',
-      created: '2019-01-01', modified: '2019-01-01', email: '' },
-    { id: 11, name: 'Job 11', description: 'Job 11 description', status: 'Active',
-      created: '2019-01-01', modified: '2019-01-01', email: '' }
-  ];
+  records = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -64,8 +38,16 @@ export class ProjectDetailsComponent implements OnInit {
     this.showWorkReport(this.id);
   }
 
-  addLogWork() {
-    this.showLogWork(this.id);
+  addModule() {
+    this.showModule(this.id);
+  }
+
+  addSprint() {
+    this.showSprint(this.id);
+  }
+
+  addJob() {
+    this.showJob(this.id);
   }
 
   backLine() {
@@ -85,12 +67,38 @@ export class ProjectDetailsComponent implements OnInit {
     );
   }
 
-  private showLogWork(id?: number) {
-    let logWork: BsModalRef;
-    logWork = this._modalService.show(
-      AddLogworkComponent,
+  private showSprint(id?: number) {
+    let sprint: BsModalRef;
+    sprint = this._modalService.show(
+      AddSprintComponent,
       {
-        class: 'modal-xl',
+        class: 'modal-lg',
+        initialState: {
+          id
+        }
+      }
+    );
+  }
+
+  private showJob(id?: number) {
+    let job: BsModalRef;
+    job = this._modalService.show(
+      AddJobComponent,
+      {
+        class: 'modal-lg',
+        initialState: {
+          id
+        }
+      }
+    );
+  }
+
+  private showModule(id?: number) {
+    let module: BsModalRef;
+    module = this._modalService.show(
+      AddModuleComponent,
+      {
+        class: 'modal-lg',
         initialState: {
           id
         }

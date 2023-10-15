@@ -1,5 +1,6 @@
 <form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
   <abp-modal-header [title]="'LogWork'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <!-- <pre>{{ formData.value | json }}</pre> -->
   <div class="modal-body fixed-modal-height-full">
     <div class="row ui-fluid">
       <div class="col-md-12">
@@ -10,12 +11,16 @@
           <div class="p-fluid p-grid p-formgrid mt-2 ml-2" style="display: flex;">
               <div class="p-md-4">
                 <label>Sprint *</label>
-                <p-autoComplete formControlName="sprint" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+                <p-dropdown [options]="sprintItems" formControlName="sprint" [styleClass]="'custom-height-width'" [showClear]="true"
+                  (onChange)="onSprintChane($event)" optionLabel="displayName" [editable]="true" resetFilterOnHide="true"
+                  ></p-dropdown>
                 <abp-validation-summary [control]="formData.get('sprint')"></abp-validation-summary>
               </div>
               <div class="p-md-4">
                 <label>Module *</label>
-                <p-autoComplete formControlName="module" [styleClass]="'custom-height-width'" [dropdown]="true"></p-autoComplete>
+                <p-dropdown [options]="moduleItems" formControlName="module" [styleClass]="'custom-height-width'"
+                  [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"
+                  ></p-dropdown>
                 <abp-validation-summary [control]="formData.get('module')"></abp-validation-summary>
               </div>
               <div class="p-md-4">
@@ -30,7 +35,7 @@
         <div class="row ui-fluid">
           <div class="col-md-12">
             <div class="text-right">
-              <label>Add: {{ hours }}</label>
+              <label>Add: {{ hours }}h</label>
             </div>
           </div>
         </div>
@@ -40,7 +45,7 @@
             <div [formGroupName]="i">
               <fieldset style="border: 1px solid #000; padding: 10px; border-radius: 5px;">
                 <legend style="width: unset; font-size: 15px; padding: 0 5px 0 5px;">
-                  Job 1
+                  Job {{i + 1}}
                 </legend>
                 <div>
                   <div class="row ui-fluid">
@@ -51,20 +56,22 @@
                       <div class="p-col-12" style="display: flex;">
                         <div class="p-md-6 mt-8" style="width: 406px;">
                           <label>Job</label>
-                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true"
-                            formControlName="job"></p-autoComplete>
+                          <p-dropdown [options]="jobItems" [styleClass]="'custom-height'" formControlName="job"
+                            [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
                         </div>
                         <div class="p-md-2" style="padding-right: 3px !important;">
                           <label>Kind of job</label>
-                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true" formControlName="kindOfJob"></p-autoComplete>
+                          <p-dropdown [options]="kindOfJobItems" [styleClass]="'custom-height'" formControlName="kindOfJob"
+                            [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
                         </div>
                         <div class="p-md-1 mt-4">
                           <label>Type</label>
-                          <p-autoComplete [styleClass]="'custom-height'" [dropdown]="true" formControlName="type"></p-autoComplete>
+                          <p-dropdown [options]="typeItems" [styleClass]="'custom-height'" formControlName="type"
+                            [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
                         </div>
                         <div class="p-md-1">
                           <label>On Site</label>
-                          <p-checkbox formControlName="onSite"></p-checkbox>
+                          <p-checkbox formControlName="onSite" binary="true" inputId="binary"></p-checkbox>
                         </div>
                         <div class="p-md-1">
                           <label>Hours</label>

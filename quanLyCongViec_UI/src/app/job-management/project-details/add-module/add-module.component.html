@@ -1,0 +1,18 @@
+<form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
+  <abp-modal-header [title]="'Add new module'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <div class="modal-body fixed-modal-height">
+    <div class="row ui-fluid">
+      <div class="col-md-6">
+        <label>PM *</label>
+        <input type="text" pInputText class="form-control" disabled formControlName="pm">
+        <abp-validation-summary [control]="formData.get('pm')"></abp-validation-summary>
+      </div>
+      <div class="col-md-6">
+        <label>Module *</label>
+        <input type="text" pInputText class="form-control" formControlName="module">
+        <abp-validation-summary [control]="formData.get('module')"></abp-validation-summary>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer [cancelLabel]="'Close'" (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>
