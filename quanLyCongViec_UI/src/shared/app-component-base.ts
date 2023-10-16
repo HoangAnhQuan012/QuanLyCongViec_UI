@@ -12,6 +12,7 @@ import {
 
 import { AppSessionService } from '@shared/session/app-session.service';
 import { Table } from 'primeng/table';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export abstract class AppComponentBase {
 
@@ -26,6 +27,11 @@ export abstract class AppComponentBase {
     multiTenancy: AbpMultiTenancyService;
     appSession: AppSessionService;
     elementRef: ElementRef;
+    swal: Swal;
+
+    confirmButtonColor = '#3085d6';
+    cancelButtonColor = '#d33';
+    cancelButtonText = 'Cancel';
 
     constructor(injector: Injector) {
         this.localization = injector.get(LocalizationService);
@@ -78,6 +84,14 @@ export abstract class AppComponentBase {
         } else {
             return '';
         }
+    }
+
+    showExistMessage(message: string) {
+        this.swal.fire(
+            undefined,
+            message,
+            'warning'
+        );
     }
 
     isGranted(permissionName: string): boolean {

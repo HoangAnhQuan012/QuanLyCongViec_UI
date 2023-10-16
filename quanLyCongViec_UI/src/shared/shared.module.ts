@@ -8,6 +8,7 @@ import { AppUrlService } from './nav/app-url.service';
 import { AppAuthService } from './auth/app-auth.service';
 import { AppRouteGuard } from './auth/auth-route-guard';
 import { LocalizePipe } from '@shared/pipes/localize.pipe';
+import { StatusStr } from '@shared/pipes/statusStr.pipe';
 
 import { AbpPaginationControlsComponent } from './components/pagination/abp-pagination-controls.component';
 import { AbpValidationSummaryComponent } from './components/validation/abp-validation.summary.component';
@@ -63,7 +64,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
         AbpModalFooterComponent,
         LocalizePipe,
         BusyDirective,
-        EqualValidator
+        EqualValidator,
+        StatusStr
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -73,7 +75,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         LocalizePipe,
         BusyDirective,
         EqualValidator,
-
+        StatusStr,
         // ngx-bootstrap
         NgxDropzoneModule,
 
