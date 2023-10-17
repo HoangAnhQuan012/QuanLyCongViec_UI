@@ -11,7 +11,7 @@
     <div class="card">
       <div class="card-header">
         <div class="row mt-20 mb-15">
-          <button type="button" class="btn btn-primary" style="margin-left: 46.5%;" (click)="workReport()">Work report</button>
+          <button type="button" class="btn btn-primary" style="margin-left: 46.5%;" (click)="createWorkReport()">Work report</button>
         </div>
 
         <div class="row ui-fluid flex-end mb-10 mr-0">
@@ -23,7 +23,7 @@
 
         <div class="table mb-5">
           <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="getAllReport($event)" [rowHover]="true" [rows]="5"
-            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [filterDelay]="0" styleClass="p-datatable-gridlines" dataKey="id">
             <ng-template pTemplate="header">
@@ -34,7 +34,7 @@
                 <th style="width: 200px;">Sprint</th>
                 <th style="width: 200px;">Module</th>
                 <th style="width: 70px;">Time</th>
-                <th style="width: 100px;">Status</th>
+                <th style="width: 200px;">Status</th>
                 <th style="width: 150px;"></th>
               </tr>
             </ng-template>
@@ -50,15 +50,15 @@
                 <td>{{ record.sprineName }}</td>
                 <td>{{ record.moduleName }}</td>
                 <td>{{ record.hours }}</td>
-                <td>{{ record.status }}</td>
+                <td style="text-align: center;" [ngStyle]="{'background-color': 'orange' ? (record.statusId === 0 ? '#28a745' : 'red') : 'blue'}">{{ record.status }}</td>
                 <td style="text-align: center;">
-                  <button class="btn btn-primary mr-5" type="button">
+                  <button class="btn btn-primary mr-5" type="button" (click)="viewWorkReport(record.id)">
                     <i class="pi pi-eye"></i>
                   </button>
-                  <button class="btn btn-warning mr-5" type="button">
+                  <button class="btn btn-warning mr-5" type="button" (click)="createWorkReport(record.id)">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button class="btn btn-danger" type="button">
+                  <button class="btn btn-danger" type="button" (click)="deleteWorkReport(record.id)">
                     <i class="fa fa-trash"></i>
                   </button>
                 </td>
@@ -69,23 +69,21 @@
               <tr>
                 <td colspan="8">
                   <div class="p-p-3">
-                    <p-table [value]="record.getReportDetails" dataKey="id">
+                    <p-table [value]="record" dataKey="id">
                       <ng-template pTemplate="header">
-                        <th>STT</th>
+                        <th style="width: 15px;">#</th>
                         <th>Job</th>
                         <th>Time</th>
                         <th>Kind of job</th>
                         <th>Type</th>
-                        <th>Attached files</th>
                       </ng-template>
                       <ng-template pTemplate="body" let-rec let-i="rowIndex">
                         <tr>
                           <td>{{ i + 1 }}</td>
                           <td>{{ rec.jobName }}</td>
-                          <td>{{ rec.hours }}</td>
+                          <td>{{ rec.hours }}h</td>
                           <td>{{ rec.kindOfJobName }}</td>
                           <td>{{ rec.typeName }}</td>
-                          <td></td>
                         </tr>
                       </ng-template>
 

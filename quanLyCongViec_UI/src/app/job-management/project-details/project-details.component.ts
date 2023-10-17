@@ -8,6 +8,7 @@ import { AddJobComponent } from './add-job/add-job.component';
 import { GetAllWorkReportForViewDto, WorkReportServiceProxy } from '@shared/service-proxies/service-proxies';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
+import * as models from '@shared/AppModels';
 
 @Component({
   selector: 'app-project-details',
@@ -23,6 +24,7 @@ export class ProjectDetailsComponent implements OnInit {
   loading = false;
   totalRecords: number;
   records: GetAllWorkReportForViewDto[] = [];
+  projectStatus = models.ProjectStatus;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,11 +37,13 @@ export class ProjectDetailsComponent implements OnInit {
     this.routeSub = this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
+    this.getAllReport();
   }
 
   getAllReport(lazyLoad ?: LazyLoadEvent) {
     this.loading = true;
     this._workReportService.getAllWorkReport(
+      this.id,
       lazyLoad ? lazyLoad.first : this.table.first,
       lazyLoad ? lazyLoad.rows : this.table.rows
     ).subscribe((result) => {
@@ -49,9 +53,15 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
-  workReport() {
-    this.showWorkReport(this.id);
+  viewWorkReport(workReportId ?: number) {
+    this.showWorkReport(this.id, workReportId, true);
   }
+
+  createWorkReport(workReportId?: number) {
+    this.showWorkReport(this.id, workReportId);
+  }
+
+  deleteWorkReport(workReportId?: number) {}
 
   addModule() {
     this.showModule(this.id);
@@ -69,14 +79,16 @@ export class ProjectDetailsComponent implements OnInit {
     this._router.navigate(['/app/job-management']);
   }
 
-  private showWorkReport(id?: number) {
+  private showWorkReport(projectId?: number, workReportId ?: number, isView = false) {
     let workReport: BsModalRef;
     workReport = this._modalService.show(
       WorkReportComponent,
       {
         class: 'modal-xl',
         initialState: {
-          id
+          projectId,
+          workReportId,
+          isView
         }
       }
     );

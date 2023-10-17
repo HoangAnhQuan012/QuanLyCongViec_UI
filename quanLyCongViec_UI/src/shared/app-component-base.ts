@@ -29,9 +29,12 @@ export abstract class AppComponentBase {
     elementRef: ElementRef;
     swal: Swal;
 
+    typeFileUpload = '.doc,.docx,application/pdf, application/vnd.ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel';
+
     confirmButtonColor = '#3085d6';
     cancelButtonColor = '#d33';
     cancelButtonText = 'Cancel';
+    confirmButtonText = 'Yes';
 
     constructor(injector: Injector) {
         this.localization = injector.get(LocalizationService);
@@ -69,7 +72,11 @@ export abstract class AppComponentBase {
     }
 
     showUpdateMessage() {
-        this.notify.success('Updated Successfully!');
+        this.notify.warn('Updated Successfully!');
+    }
+
+    showDeleteMessage() {
+        this.notify.error('Deleted Successfully!');
     }
 
     getLinkFile(res, fileName) {
@@ -92,6 +99,16 @@ export abstract class AppComponentBase {
             message,
             'warning'
         );
+    }
+
+    blobToFile = (theBlob: Blob, fileName: string): File => {
+        const b: any = theBlob;
+        // A Blob() is almost a File() - it's just missing the two properties below which we will add
+        b.lastModifiedDate = new Date();
+        b.name = fileName;
+
+        // Cast to a File() type
+        return <File>theBlob;
     }
 
     isGranted(permissionName: string): boolean {

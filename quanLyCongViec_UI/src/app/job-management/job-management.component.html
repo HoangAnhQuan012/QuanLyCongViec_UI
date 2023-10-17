@@ -1,4 +1,5 @@
 <div class="p-grid table-demo mt-15 ml-20 mr-15">
+  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -33,7 +34,7 @@
     </div>
       <div class="row justify-content-end mt-10 mr-55 mb-10">
         <button type="button" class="btn btn-success mr-10" (click)="ExportExcel()"><i class="fa fa-download"></i> Export</button>
-        <button type="button" class="btn btn-primary" (click)="createProject()">Thêm mới</button>
+        <button type="button" class="btn btn-primary" (click)="createProject()"><i class="fa fa-plus mr-5"></i>Add</button>
       </div>
       <div class="table mb-5">
         <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
@@ -71,19 +72,23 @@
               <td>{{ record.startDate | date:'dd/MM/yyyy'}}</td>
               <td>{{ record.endDate | date:'dd/MM/yyyy' }}</td>
               <td>{{ record.projectManagerName }}</td>
-              <td>
-                <button type="button" class="btn btn-warning btn-transparent btn-action mr-5" (click)="editProject(record.id)">
+              <td style="text-align: center;">
+                <button class="btn btn-primary mr-5" type="button" (click)="viewProject(record.id)">
+                  <i class="pi pi-eye"></i>
+                </button>
+                <button type="button" class="btn btn-warning btn-transparent btn-action mr-5"(click)="createProject(record.id)">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button type="button" class="btn btn-danger btn-transparent btn-action" (click)="deleteProject(record.id)">
+                <p-button [styleClass]="'custom-height-width'" (click)="deleteProject(record)" icon="fas fa-trash-alt"></p-button>
+                <!-- <button type="button" class="btn btn-danger btn-transparent btn-action" (click)="deleteProject(record)">
                   <i class="fas fa-trash-alt"></i>
-                </button>
+                </button> -->
               </td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">
             <tr>
-              <td colspan="10">Không có dữ liệu</td>
+              <td colspan="10">Data not found</td>
             </tr>
           </ng-template>
         </p-table>

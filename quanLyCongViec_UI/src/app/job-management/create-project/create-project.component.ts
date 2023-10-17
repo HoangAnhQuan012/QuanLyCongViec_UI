@@ -5,9 +5,13 @@ import { AppConsts } from '@shared/AppConsts';
 import { CheckPermissionConst } from '@shared/AppEnums';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FileDownloadService } from '@shared/file-download.service';
-import { ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy, ProjectsForViewDto } from '@shared/service-proxies/service-proxies';
+import { ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy, ProjectUser, ProjectsForViewDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
+import * as models from '@shared/AppModels';
+import { CommonComponent } from '@shared/components/common.component';
+import { split } from 'lodash-es';
+
 const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProjectUpload';
 
 @Component({
@@ -23,10 +27,13 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
   id: number;
   saving = false;
   createInputDto: ProjectInputDto = new ProjectInputDto();
-  demoDto: any;
   isEdit = false;
   getForEdit: ProjectsForViewDto = new ProjectsForViewDto();
   userList = [];
+  isView = false;
+  projectName = '';
+  filesAllFile: File[] = [];
+  uploading = false;
 
   constructor(
     injector: Injector,
@@ -63,10 +70,20 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
       });
     } else {
       this.isEdit = true;
-      this._projectService.getForEdit(this.id).subscribe(res => {
-        this.getForEdit = res;
-        this.setValueForEdit();
+      this._projectService.getProjectName(this.id).subscribe(val => {
+        this.projectName = val;
+        this._projectService.getForEdit(this.id, this.projectName).subscribe(res => {
+          this.getForEdit = res;
+          this.setValueForEdit();
+        });
       });
+    }
+    if (this.isView) {
+      this.formData.disable();
+    } else {
+      this.formData.enable();
+      this.formData.controls.pm.disable();
+      this.formData.controls.status.disable();
     }
 
   }
@@ -138,22 +155,36 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
     this.createInputDto.customer = this.formData.controls.customer.value;
     this.createInputDto.startDate = this.formData.controls.startDate.value;
     this.createInputDto.endDate = this.formData.controls.endDate.value;
-    this.createInputDto.userId = [];
+    this.createInputDto.projectUsers = [];
     for (const item of this.formData.controls.employee.value) {
-      this.createInputDto.userId.push(item.id);
+      const projectUser = new ProjectUser();
+      projectUser.userId = item.id;
+      projectUser.projectsId = this.id;
+      this.createInputDto.projectUsers.push(projectUser);
     }
     this.createInputDto.note = this.formData.controls.note.value;
-    // this.createInputDto.status = this.formData.controls.status.value.id;
+    console.log(this.createInputDto.projectUsers);
+
   }
 
   private setValueForEdit() {
     this.formData.controls.projectName.setValue(this.getForEdit.projectName);
     this.formData.controls.customer.setValue(this.getForEdit.customer);
-    this.formData.controls.pm.value.id.setValue(this.getForEdit.projectManagerId);
     this.formData.controls.pm.setValue(this.getForEdit.projectManagerName);
-    this.formData.controls.startDate.setValue(this.getForEdit.startDate);
-    this.formData.controls.endDate.setValue(this.getForEdit.endDate);
+    this.formData.controls.startDate.setValue(CommonComponent.getDateForEditFromMoment(this.getForEdit.startDate));
+    this.formData.controls.endDate.setValue(CommonComponent.getDateForEditFromMoment(this.getForEdit.endDate));
+    this.formData.controls.status.setValue(models.ProjectStatus[this.getForEdit.status]);
     this.formData.controls.note.setValue(this.getForEdit.note);
+    this.formData.controls.employee.setValue(this.getForEdit.listUsers);
+
+
+    for (const file of this.getForEdit.listFile) {
+      const path = AppConsts.remoteServiceBaseUrl + '\\Upload\\Project' + file.filePath;
+      this.http.get(path, { responseType: 'blob' }).subscribe((data) => {
+        this.filesAllFile.push(this.blobToFile(data, file.fileName));
+      });
+    }
+
   }
 
   private FileProcessing(res) {

@@ -37,6 +37,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {FieldsetModule} from 'primeng/fieldset';
 import {DropdownModule} from 'primeng/dropdown';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
     imports: [
@@ -55,7 +58,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
         InputNumberModule,
         FieldsetModule,
         DropdownModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ConfirmDialogModule,
+        ToastModule,
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -65,7 +70,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         LocalizePipe,
         BusyDirective,
         EqualValidator,
-        StatusStr
+        StatusStr,
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -90,9 +95,11 @@ import {MultiSelectModule} from 'primeng/multiselect';
         InputNumberModule,
         FieldsetModule,
         DropdownModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ConfirmDialogModule,
+        ToastModule,
     ],
-    providers: [FileDownloadService]
+    providers: [FileDownloadService, ConfirmationService, MessageService],
 })
 export class SharedModule {
     static forRoot(): ModuleWithProviders<SharedModule> {

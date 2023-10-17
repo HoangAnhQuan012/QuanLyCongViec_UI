@@ -34,7 +34,7 @@ export class AddJobComponent extends AppComponentBase implements OnInit {
       this.formData.controls.pm.disable();
     });
 
-    this._jobService.getAllSprint().subscribe((result) => {
+    this._jobService.getAllSprint(this.id).subscribe((result) => {
       this.sprintList = result;
     });
   }
@@ -62,7 +62,7 @@ export class AddJobComponent extends AppComponentBase implements OnInit {
 
   searchUnit(event) {
     const query = event.query;
-    this._jobService.getAllSprint().subscribe((result) => {
+    this._jobService.getAllSprint(this.id).subscribe((result) => {
       this.sprintList = this.filterSprint(query, result);
     });
   }

@@ -1,5 +1,5 @@
 <form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
-  <abp-modal-header [title]="id ? 'Cập nhật: ' + demoDto.tenTS : 'Add new project'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+  <abp-modal-header [title]="id ? (isView ? 'View detail: ' + getForEdit.projectName : 'Update: ' + getForEdit.projectName) : 'Add new project'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <div class="modal-body fixed-modal-height">
     <div class="row ui-fluid">
       <div class="col-md-6">
@@ -53,6 +53,7 @@
       <div class="p-col-4"></div>
     </div>
 
+
     <div class="row ui-fluid">
       <div class="col-md-12">
         <label>Note</label>
@@ -60,7 +61,7 @@
       </div>
     </div>
 
-  <div class="mt-10" style="text-align: right;">
+  <div *ngIf="!isView" class="mt-10" style="text-align: right;">
       <button type="button" class="btn btn-danger" [disabled]="attachedFile.length === 0"
           (click)="deleteListFile()"><i class="fas fa-trash"></i>
           <span style="margin-left: 5px;">Delete all</span></button>
@@ -68,23 +69,22 @@
 
   <div class="ui-fluid row">
       <div class="col-md-12">
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom: 0;">
               <label>Attached files</label>
-              <ngx-dropzone (change)="onSelectAllFile($event)"
-                  [multiple]="true" accept=".doc,.docx,application/pdf, application/vnd.ms-excel,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-              .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+              <ngx-dropzone *ngIf="!isView" [disabled]="uploading" (change)="onSelectAllFile($event)"
+                  [multiple]="true" [accept]="typeFileUpload">
                   <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
-                  <ngx-dropzone-preview *ngFor="let f of attachedFile"
+                  <ngx-dropzone-preview *ngFor="let f of attachedFile" [removable]="!isView"
                       (removed)="onRemoveAllFile(f)">
                       <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
                   </ngx-dropzone-preview>
               </ngx-dropzone>
           </div>
       </div>
-      <div class="col-md-12">
+      <div *ngIf="isView" class="col-md-12">
           <ul class="list-unstyled">
-              <li *ngFor="let file of demoDto?.listFile">
-                  <a (click)="onDownloadFile(file.linkFile)" class="text-primary">{{file.tenFile}}</a>
+              <li *ngFor="let file of getForEdit.listFile">
+                  <a style="cursor: pointer;" (click)="onDownloadFile(file.filePath)" class="text-primary">{{file.fileName}}</a>
               </li>
           </ul>
       </div>

@@ -22,5 +22,20 @@ div.table {
             padding-top: 0;
             padding-bottom: 0;
         }
+
+        .custom-height-width {
+            height: 37.6px;
+            width: 41.6px;
+        }
+
+        .p-button {
+            background: #EF4444;
+            border: 1px solid #EF4444;
+        }
+
+        .p-button:hover {
+            background: #DC2626 !important;
+            border-color: #DC2626 !important;
+        }
     }
 }
