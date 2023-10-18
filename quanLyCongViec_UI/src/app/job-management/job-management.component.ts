@@ -4,9 +4,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmEventType, ConfirmationService, LazyLoadEvent, Message, MessageService, SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { CreateProjectComponent } from './create-project/create-project.component';
-import { ProjectManagementServiceProxy, ProjectsForViewDto } from '@shared/service-proxies/service-proxies';
+import { GetAllInputDto, ProjectManagementServiceProxy, ProjectsForViewDto } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/app-component-base';
 import { finalize } from 'rxjs/operators';
+import { FileDownloadService } from '@shared/file-download.service';
 
 @Component({
   selector: 'app-job-management',
@@ -20,6 +21,11 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
   keyword = '';
   records: ProjectsForViewDto[] = [];
   msgs: Message[] = [];
+  exporting = false;
+  input: GetAllInputDto;
+  lazyLoad: LazyLoadEvent;
+  checkGrant: boolean;
+  checkViewProject = false;
 
   constructor(
     injector: Injector,
@@ -27,13 +33,15 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
     private modalService: BsModalService,
     private _projectService: ProjectManagementServiceProxy,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private _fileDownloadService: FileDownloadService
   ) {
     super(injector);
    }
 
   ngOnInit() {
     this.totalRecords = this.records.length;
+    this.checkGrant = this.isGranted('Pages.ProjectManager.Create');
   }
 
   getDataPage(LazyLoad?: LazyLoadEvent) {
@@ -51,15 +59,20 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
   }
 
   ProjectDetails(id: number) {
-    this._router.navigate([`app/job-management/project-details/${id}`]);
+    this._projectService.checkViewProject(id).subscribe(result => {
+      this.checkViewProject = result;
+      if (this.checkViewProject) {
+        this._router.navigate([`app/job-management/project-details/${id}`]);
+      }
+    });
   }
 
   createProject(id?: number) {
     this._showCreateDialog(id);
   }
 
-  viewProject(id?: number) {
-    this._showCreateDialog(id, true);
+  viewProject(id?: number, statusId?: number) {
+    this._showCreateDialog(id, statusId, true);
   }
 
   deleteProject(record: ProjectsForViewDto) {
@@ -80,9 +93,22 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  ExportExcel() {}
+  ExportExcel() {
+    this.exporting = true;
+    this.input = new GetAllInputDto();
+    this.input.keyword = this.keyword || undefined;
+    this.input.sorting = this.getSortField(this.table);
+    this.input.skipCount = this.lazyLoad ? this.lazyLoad.first : this.table.first;
+    this.input.maxResultCount = this.lazyLoad ? this.lazyLoad.rows : this.table.rows;
+    this._projectService.exportToExcel(this.input).subscribe(result => {
+      this._fileDownloadService.downloadTempFile(result);
+      this.exporting = false;
+    }, () => {
+      this.exporting = false;
+    });
+  }
 
-  private _showCreateDialog(id?: number, isView = false): void {
+  private _showCreateDialog(id?: number, statusId?: number, isView = false): void {
     let createDialog: BsModalRef;
     createDialog = this.modalService.show(
       CreateProjectComponent,
@@ -91,6 +117,7 @@ export class JobManagementComponent extends AppComponentBase implements OnInit {
         ignoreBackdropClick: true,
         initialState: {
           id,
+          statusId,
           isView
         },
       }

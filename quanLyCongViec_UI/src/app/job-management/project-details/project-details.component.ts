@@ -26,6 +26,7 @@ export class ProjectDetailsComponent extends AppComponentBase implements OnInit 
   loading = false;
   totalRecords: number;
   projectStatus = models.ProjectStatus;
+  checkGrant = false;
 
   constructor(
     private injector: Injector,
@@ -43,18 +44,21 @@ export class ProjectDetailsComponent extends AppComponentBase implements OnInit 
       this.id = params['id'];
     });
     this.getAllReport();
+    this.checkGrant = this.isGranted('Pages.ProjectManager.Create');
+
   }
 
   getAllReport(lazyLoad ?: LazyLoadEvent) {
     this.loading = true;
     this._workReportService.getAllWorkReport(
       this.id,
-      lazyLoad ? lazyLoad.first : this.table.first,
-      lazyLoad ? lazyLoad.rows : this.table.rows
+      lazyLoad ? lazyLoad.first : this.table?.first,
+      lazyLoad ? lazyLoad.rows : this.table?.rows
     ).subscribe((result) => {
       this.records = result.items;
       this.totalRecords = result.totalCount;
       this.loading = false;
+      console.log(this.records);
     });
   }
 

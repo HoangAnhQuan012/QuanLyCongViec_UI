@@ -90,5 +90,8 @@
       </div>
   </div>
   </div>
-  <abp-modal-footer [cancelLabel]="'Close'" (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+  <abp-modal-footer [cancelLabel]="'Close'" (onCancelClick)="bsModalRef.hide()" [saveDisabled]="formData.invalid"
+    (onSaveClick)="save()" [saveDisabled]="formData.invalid" [saveLabel]="isView ? (this.isProgress === true ? 'In Progress' : 'Completed') : 'Save'"
+    [saveHidden]="saveHidden">
+  </abp-modal-footer>
 </form>

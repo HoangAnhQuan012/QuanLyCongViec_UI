@@ -26,9 +26,12 @@ import { CreateProjectComponent } from './job-management/create-project/create-p
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
                     { path: 'job-management', component: JobManagementComponent,
-                        data: { permission: 'Pages.QuanLyCongViec' }, canActivate: [AppRouteGuard] },
+                        data: { permission: 'Pages.ProjectManager' },
+                        canActivate: [AppRouteGuard] },
                     { path: 'job-management/project-details/:id', component: ProjectDetailsComponent, canActivate: [AppRouteGuard] },
-                    { path: 'job-management/create-project', component: CreateProjectComponent, canActivate: [AppRouteGuard]}
+                    { path: 'job-management/create-project', component: CreateProjectComponent,
+                        data: { permission: 'Pages.ProjectManager.Create' },
+                        canActivate: [AppRouteGuard] }
                 ]
             }
         ])

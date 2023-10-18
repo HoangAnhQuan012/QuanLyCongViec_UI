@@ -49,7 +49,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 this.l('Projects'),
                 '/app/job-management',
                 'fas fa-briefcase',
-                'Pages.QuanLyCongViec',
+                'Pages.ProjectManager',
             ),
             new MenuItem(
                 this.l('Roles'),

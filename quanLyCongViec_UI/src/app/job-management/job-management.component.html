@@ -32,11 +32,11 @@
           </div>
         </div>
     </div>
-      <div class="row justify-content-end mt-10 mr-55 mb-10">
+      <div *ngIf="checkGrant" class="row justify-content-end mt-10 mr-55 mb-10">
         <button type="button" class="btn btn-success mr-10" (click)="ExportExcel()"><i class="fa fa-download"></i> Export</button>
         <button type="button" class="btn btn-primary" (click)="createProject()"><i class="fa fa-plus mr-5"></i>Add</button>
       </div>
-      <div class="table mb-5">
+      <div class="table mb-5 mt-10">
         <p-table #dt [value]="records" [lazy]="true" (onLazyLoad)="getDataPage($event)" [rowHover]="true" [rows]="5"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,20,50]" [loading]="loading" [totalRecords]="totalRecords"
           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -51,7 +51,7 @@
               <th pSortableColumn="startDate">Start date <p-sortIcon field="startDate"></p-sortIcon></th>
               <th pSortableColumn="endDate">End date <p-sortIcon field="endDate"></p-sortIcon></th>
               <th pSortableColumn="projectManagerName">PM <p-sortIcon field="projectManagerName"></p-sortIcon></th>
-              <th></th>
+              <th *ngIf="checkGrant"></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-record let-i="rowIndex">
@@ -77,8 +77,8 @@
               <td>{{ record.startDate | date:'dd/MM/yyyy'}}</td>
               <td>{{ record.endDate | date:'dd/MM/yyyy' }}</td>
               <td>{{ record.projectManagerName }}</td>
-              <td style="text-align: center;">
-                <button class="btn btn-primary mr-5" type="button" (click)="viewProject(record.id)">
+              <td *ngIf="checkGrant" style="text-align: center;">
+                <button class="btn btn-primary mr-5" type="button" (click)="viewProject(record.id, record.status)">
                   <i class="pi pi-eye"></i>
                 </button>
                 <button type="button" class="btn btn-warning btn-transparent btn-action mr-5"(click)="createProject(record.id)">

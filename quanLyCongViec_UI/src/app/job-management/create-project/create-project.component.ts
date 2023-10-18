@@ -5,11 +5,13 @@ import { AppConsts } from '@shared/AppConsts';
 import { CheckPermissionConst } from '@shared/AppEnums';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FileDownloadService } from '@shared/file-download.service';
-import { ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy, ProjectUser, ProjectsForViewDto } from '@shared/service-proxies/service-proxies';
+import { CreateProjectUserDto, ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy,
+         ProjectUserDto, ProjectsForViewDto, UpdateStatusDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 import * as models from '@shared/AppModels';
 import { CommonComponent } from '@shared/components/common.component';
+import { ConfirmationService, Message } from 'primeng/api';
 
 const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProjectUpload';
 
@@ -33,6 +35,11 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
   projectName = '';
   filesAllFile: File[] = [];
   uploading = false;
+  isProgress = false;
+  statusId: number;
+  saveHidden = false;
+  msgs: Message[] = [];
+  updateStatus: UpdateStatusDto = new UpdateStatusDto();
 
   constructor(
     injector: Injector,
@@ -40,12 +47,15 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
     private _fb: FormBuilder,
     private _projectService: ProjectManagementServiceProxy,
     private http: HttpClient,
-    private _fileDownloadService: FileDownloadService
+    private _fileDownloadService: FileDownloadService,
+    private confirmationService: ConfirmationService,
   ) {
     super(injector);
   }
 
   ngOnInit() {
+    this.isProgress = this.statusId === 0;
+    this.saveHidden = this.statusId === 2;
     this.createForm();
     this._projectService.checkAdmin().subscribe(result => {
       if (result === CheckPermissionConst.PM) {
@@ -130,21 +140,50 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
       this.getValueForSave();
       this.createInputDto.projectAttachedFiles = [];
       this.FileProcessing(res);
-      this._projectService.createOrEditProject(this.createInputDto).pipe(
-        finalize(() => {
-          this.saving = false;
-        })
-      ).subscribe(val => {
-        if (!this.id) {
-          this.showCreateMessage();
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        } else {
-          this.showUpdateMessage();
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        }
-      });
+      if (this.isView) {
+        this.isProgressed();
+      } else {
+        this._projectService.createOrEditProject(this.createInputDto).pipe(
+          finalize(() => {
+            this.saving = false;
+          })
+        ).subscribe(val => {
+          if (!this.id) {
+            this.showCreateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          } else {
+            this.showUpdateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          }
+        });
+      }
+    });
+  }
+
+  isProgressed() {
+    this.confirmationService.confirm({
+      message: 'Do you want to update this project?',
+      header: 'Update Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+          this.msgs = [{severity: 'info', summary: 'Confirmed', detail: 'Record deleted'}];
+          this.updateStatus.id =  this.getForEdit.id;
+          this.updateStatus.status = this.getForEdit.status;
+          this._projectService.updateProjectStatus(this.updateStatus).pipe(
+            finalize(() => {
+              this.saving = false;
+            })
+          ).subscribe(() => {
+            this.showUpdateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          });
+      },
+      reject: () => {
+          this.msgs = [{severity: 'info', summary: 'Rejected', detail: 'You have rejected'}];
+      }
     });
   }
 
@@ -156,9 +195,8 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
     this.createInputDto.endDate = this.formData.controls.endDate.value;
     this.createInputDto.projectUsers = [];
     for (const item of this.formData.controls.employee.value) {
-      const projectUser = new ProjectUser();
+      const projectUser = new ProjectUserDto();
       projectUser.userId = item.id;
-      projectUser.projectsId = this.id;
       this.createInputDto.projectUsers.push(projectUser);
     }
     this.createInputDto.note = this.formData.controls.note.value;
