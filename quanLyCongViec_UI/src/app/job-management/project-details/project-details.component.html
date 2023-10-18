@@ -1,4 +1,5 @@
 <div class="p-grid table-demo mt-15 ml-20 mr-15">
+  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -50,8 +51,10 @@
                 <td>{{ record.sprineName }}</td>
                 <td>{{ record.moduleName }}</td>
                 <td>{{ record.hours }}</td>
-                <td style="text-align: center; color: #fff;"
-                  ><span style="border-radius: 3px;" [ngStyle]="{'background-color': record.statusId === 0 ? 'orange' : (record.statusId === 1 ? '#28a745' : 'red')}">
+                <td style="text-align: center;"
+                  ><span class="style-status"
+                    [ngStyle]="{'background-color': record.statusId === 0 ? '#ffd8b2' : (record.statusId === 1 ? '#c8e6c9' : '#ffcdd2'),
+                    'color': record.statusId === 0 ? '#805b36' : (record.statusId === 1 ? '#256029' : '#c63737')}">
                     {{ record.status }}
                   </span></td>
                 <td style="text-align: center;">
@@ -72,7 +75,7 @@
               <tr>
                 <td colspan="8">
                   <div class="p-p-3">
-                    <p-table [value]="record" dataKey="id">
+                    <p-table [value]="record.getReportDetails" dataKey="id">
                       <ng-template pTemplate="header">
                         <th style="width: 15px;">#</th>
                         <th>Job</th>

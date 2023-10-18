@@ -8,6 +8,15 @@
             padding-top: 0;
             padding-bottom: 0;
         }
+
+        span.style-status {
+            border-radius: 2px;
+            padding: .25em .5rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
     }
 }
 

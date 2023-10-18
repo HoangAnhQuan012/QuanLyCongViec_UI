@@ -11,6 +11,7 @@ import { CreateWorkReportInputDto, LookupTableDto, UpdateReportStatusInput, Work
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ConfirmationService, Message } from 'primeng/api';
 import { finalize, forkJoin } from 'rxjs';
+const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/WorkReportUpload';
 
 @Component({
   selector: 'app-workReport',
@@ -20,31 +21,28 @@ import { finalize, forkJoin } from 'rxjs';
 export class WorkReportComponent extends AppComponentBase implements OnInit {
   @Output() onSave = new EventEmitter<any>();
   formData: FormGroup;
-  SubJobs: FormArray = new FormArray([]);
-  filesAllFile: File[] = [];
-  demoDto: any = {};
   dateFormat = 'dd/MM/yyyy';
   hours = 0;
-  isModified = false;
   sprintItems: LookupTableDto[] = [];
   moduleItems: LookupTableDto[] = [];
   jobItems: LookupTableDto[] = [];
   kindOfJobItems: LookupTableDto[] = [];
   typeItems: LookupTableDto[] = [];
+  filesAllFile: File[] = [];
+  attachedFile: File[] = [];
+  msgs: Message[] = [];
   createWorkReportInput: CreateWorkReportInputDto = new CreateWorkReportInputDto();
-  saving = false;
+  getForEdit: WorkReportForViewDto = new WorkReportForViewDto();
+  workReport: UpdateReportStatusInput = new UpdateReportStatusInput();
   projectId: number;
   workReportId: number;
-  isView = false;
-  workReportDto: any = {};
-  getForEdit: WorkReportForViewDto = new WorkReportForViewDto();
-  uploading = false;
-  attachedFile: File[] = [];
-  isApprovedStatus = false;
   statusId: number;
-  msgs: Message[] = [];
-  workReport: UpdateReportStatusInput = new UpdateReportStatusInput();
+  saving = false;
+  isView = false;
+  uploading = false;
+  isApprovedStatus = false;
   saveHidden = false;
+  // SubJobs: FormArray = new FormArray([]);
 
   constructor(
     private injector: Injector,
@@ -61,8 +59,6 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.isApprovedStatus = this.statusId === 0;
     this.saveHidden = this.statusId === 2;
-
-    console.log(this.isApprovedStatus);
 
     this.CreateForm();
     forkJoin(
@@ -102,7 +98,6 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
 
   CreateForm() {
     this.formData = this.fb.group({
-      subJobs: this.fb.array([]),
       sprint: ['', [Validators.required]],
       module: ['', [Validators.required]],
       declarationDate: ['', [Validators.required]],
@@ -112,12 +107,8 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
       onSite: [''],
       hours: ['', [Validators.required]],
       note: [''],
+      // subJobs: this.fb.array([]),
     });
-  }
-
-  isApproved() {
-    // tslint:disable-next-line:no-unused-expression
-    this.isApprovedStatus === true ? 'Approved' : 'Rejected';
   }
 
   // createItem(): FormGroup {
@@ -177,30 +168,42 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   }
 
   save() {
+    this.saving = true;
     const pipe = new StatusStr();
-    this.getValueForSave();
-    this.createWorkReportInput.status = pipe.transform(this.createWorkReportInput.status);
-    if (this.isView) {
-      this.approvedStatus();
-    } else {
-      this._workReportService.createOrEditWorkReport(this.createWorkReportInput).pipe(
-      finalize(() => {
-        this.saving = true;
-      })).subscribe(() => {
-        if (!this.workReportId) {
-          this.showCreateMessage();
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        } else {
-          this.showUpdateMessage();
-          this.bsModalRef.hide();
-          this.onSave.emit();
-        }
-      });
+    const formdata = new FormData();
+    formdata.append('sprint', this.formData.controls.sprint.value);
+    for (let i = 0; i < this.attachedFile.length; i++) {
+      const item = new File([this.attachedFile[i]], this.attachedFile[i].name);
+      formdata.append((i + 1) + '', item);
     }
+    this.http.post(URL, formdata).subscribe(res => {
+      this.getValueForSave();
+      this.createWorkReportInput.attachedFiles = [];
+      this.FileProcessing(res);
+      this.createWorkReportInput.status = pipe.transform(this.createWorkReportInput.status);
+      if (this.isView) {
+        this.approvedStatus();
+      } else {
+        this._workReportService.createOrEditWorkReport(this.createWorkReportInput).pipe(
+        finalize(() => {
+          this.saving = true;
+        })).subscribe(() => {
+          if (!this.workReportId) {
+            this.showCreateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          } else {
+            this.showUpdateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          }
+        });
+      }
+    });
   }
 
   private getValueForSave() {
+    this.createWorkReportInput.id = this.workReportId;
     this.createWorkReportInput.projectId = this.projectId;
     this.createWorkReportInput.sprintId = this.formData.controls.sprint.value.id;
     this.createWorkReportInput.moduleId = this.formData.controls.module.value.id;
@@ -208,7 +211,7 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     this.createWorkReportInput.jobId = this.formData.controls.job.value.id;
     this.createWorkReportInput.kindOfJob = this.formData.controls.kindOfJob.value.id;
     this.createWorkReportInput.type = this.formData.controls.type.value.id;
-    this.createWorkReportInput.onSite = this.formData.controls.onSite.value;
+    this.createWorkReportInput.onSite = this.formData.controls.onSite.value === '' ? false : true;
     this.createWorkReportInput.hours = this.formData.controls.hours.value;
     this.createWorkReportInput.note = this.formData.controls.note.value;
     // const list = this.formData.controls.subJobs.value;
@@ -268,6 +271,7 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
         this.filesAllFile.push(this.blobToFile(data, file.fileName));
       });
     }
+
   }
 
   private FileProcessing(res) {
@@ -275,7 +279,7 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
       const item = new WorkReportAttachedFiles();
       item.fileName = file.name;
       item.filePath = this.getLinkFile(res, file.name);
-      this.getForEdit.listFile.push(item);
+      this.createWorkReportInput.attachedFiles.push(item);
     }
   }
 

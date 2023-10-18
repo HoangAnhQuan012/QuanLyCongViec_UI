@@ -155,7 +155,7 @@
                                     <td>{{ user.userName }}</td>
                                     <td>{{ user.fullName }}</td>
                                     <td>{{ user.emailAddress }}</td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <div class="custom-control custom-checkbox">
                                             <input
                                                     type="checkbox"
@@ -166,14 +166,13 @@
                                             <label class="custom-control-label"></label>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center;">
                                         <button
                                                 type="button"
                                                 class="btn btn-sm bg-warning"
                                                 (click)="editUser(user)"
                                         >
                                             <i class="fas fa-pencil-alt"></i>
-                                            {{ "Edit" | localize }}
                                         </button>
                                         <button
                                                 type="button"
@@ -181,7 +180,6 @@
                                                 (click)="delete(user)"
                                         >
                                             <i class="fas fa-trash"></i>
-                                            {{ "Delete" | localize }}
                                         </button>
                                         <button
                                                 type="button"

@@ -37,5 +37,14 @@ div.table {
             background: #DC2626 !important;
             border-color: #DC2626 !important;
         }
+
+        span.style-status {
+            border-radius: 2px;
+            padding: .25em .5rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: .3px;
+        }
     }
 }

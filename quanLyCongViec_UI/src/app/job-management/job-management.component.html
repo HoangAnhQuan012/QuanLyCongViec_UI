@@ -68,7 +68,12 @@
               <td>{{ i + 1 }}</td>
               <td>{{ record.projectName }}</td>
               <td>{{ record.customer }}</td>
-              <td>{{ record.statusName }}</td>
+              <td style="text-align: center;">
+                <span class="style-status" [ngStyle]="{'background-color': record.status === 0 ? '#ffd8b2' : (record.status === 1 ? '#c8e6c9' : '#ffcdd2'),
+                'color': record.status === 0 ? '#805b36' : (record.status === 1 ? '#256029' : '#c63737')}">
+                  {{ record.statusName }}
+                </span>
+              </td>
               <td>{{ record.startDate | date:'dd/MM/yyyy'}}</td>
               <td>{{ record.endDate | date:'dd/MM/yyyy' }}</td>
               <td>{{ record.projectManagerName }}</td>

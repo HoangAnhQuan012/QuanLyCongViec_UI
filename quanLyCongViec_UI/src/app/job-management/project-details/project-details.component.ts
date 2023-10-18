@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { WorkReportComponent } from '../workReport/workReport.component';
@@ -6,32 +6,37 @@ import { AddModuleComponent } from './add-module/add-module.component';
 import { AddSprintComponent } from './add-sprint/add-sprint.component';
 import { AddJobComponent } from './add-job/add-job.component';
 import { GetAllWorkReportForViewDto, WorkReportServiceProxy } from '@shared/service-proxies/service-proxies';
-import { LazyLoadEvent } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, Message } from 'primeng/api';
 import { Table } from 'primeng/table';
 import * as models from '@shared/AppModels';
+import { AppComponentBase } from '@shared/app-component-base';
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss']
 })
-export class ProjectDetailsComponent implements OnInit {
+export class ProjectDetailsComponent extends AppComponentBase implements OnInit {
   @ViewChild('dt') table: Table;
   keyword = '';
   id: number;
-  project: any[];
+  records: GetAllWorkReportForViewDto[] = [];
+  msgs: Message[] = [];
   routeSub: any;
   loading = false;
   totalRecords: number;
-  records: GetAllWorkReportForViewDto[] = [];
   projectStatus = models.ProjectStatus;
 
   constructor(
+    private injector: Injector,
     private route: ActivatedRoute,
     private _modalService: BsModalService,
     private _router: Router,
     private _workReportService: WorkReportServiceProxy,
-  ) { }
+    private confirmationService: ConfirmationService
+  ) {
+    super(injector);
+   }
 
   ngOnInit() {
     this.routeSub = this.route.params.subscribe((params) => {
@@ -61,7 +66,23 @@ export class ProjectDetailsComponent implements OnInit {
     this.showWorkReport(this.id, workReportId);
   }
 
-  deleteWorkReport(workReportId?: number) {}
+  deleteWorkReport(workReportId?: number) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this work report?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+          this.msgs = [{severity: 'info', summary: 'Confirmed', detail: 'Work report deleted'}];
+          this._workReportService.deleteWorkReport(workReportId).subscribe(() => {
+            this.showDeleteMessage();
+            this.getAllReport();
+          });
+      },
+      reject: () => {
+          this.msgs = [{severity: 'info', summary: 'Rejected', detail: 'You have rejected'}];
+      }
+    });
+  }
 
   addModule() {
     this.showModule(this.id);
@@ -93,6 +114,10 @@ export class ProjectDetailsComponent implements OnInit {
         }
       }
     );
+
+    workReport.content.onSave.subscribe(() => {
+      this.getAllReport();
+    });
   }
 
   private showSprint(id?: number) {

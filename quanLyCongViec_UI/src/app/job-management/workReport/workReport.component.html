@@ -53,16 +53,19 @@
                       <label>Job</label>
                       <p-dropdown [options]="jobItems" [styleClass]="'custom-height'" formControlName="job"
                         [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
+                        <abp-validation-summary [control]="formData.get('job')"></abp-validation-summary>
                     </div>
                     <div class="p-md-2" style="padding-right: 3px !important;">
                       <label>Kind of job</label>
                       <p-dropdown [options]="kindOfJobItems" [styleClass]="'custom-height'" formControlName="kindOfJob"
                         [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
+                        <abp-validation-summary [control]="formData.get('kindOfJob')"></abp-validation-summary>
                     </div>
                     <div class="p-md-1 mt-4">
                       <label>Type</label>
                       <p-dropdown [options]="typeItems" [styleClass]="'custom-height'" formControlName="type"
                         [editable]="true" resetFilterOnHide="true" optionLabel="displayName" [showClear]="true"></p-dropdown>
+                        <abp-validation-summary [control]="formData.get('type')"></abp-validation-summary>
                     </div>
                     <div class="p-md-1">
                       <label>On Site</label>
@@ -71,24 +74,25 @@
                     <div class="p-md-1">
                       <label>Hours</label>
                       <p-inputNumber formControlName="hours" mode="decimal" (onInput)="onHoursChange($event)"></p-inputNumber>
+                      <abp-validation-summary [control]="formData.get('hours')"></abp-validation-summary>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div *ngIf="!isView" class="mt-10" style="text-align: right;">
-                    <button type="button" class="btn btn-danger" [disabled]="filesAllFile.length === 0"
+                    <button type="button" class="btn btn-danger" [disabled]="attachedFile.length === 0"
                         (click)="deleteListFile()"><i class="fas fa-trash"></i>
                         <span style="margin-left: 5px;">Delete all</span></button>
                 </div>
 
                 <div class="ui-fluid row">
                     <div class="col-md-12">
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label>Attached files</label>
                             <ngx-dropzone *ngIf="!isView" [disabled]="uploading" (change)="onSelectAllFile($event)"
                                 [multiple]="true" [accept]="typeFileUpload">
                                 <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
-                                <ngx-dropzone-preview *ngFor="let f of filesAllFile"
+                                <ngx-dropzone-preview *ngFor="let f of attachedFile"
                                     (removed)="onRemoveAllFile(f)">
                                     <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
                                 </ngx-dropzone-preview>
@@ -97,8 +101,8 @@
                     </div>
                     <div *ngIf="isView" class="col-md-12">
                         <ul class="list-unstyled">
-                            <li *ngFor="let file of demoDto?.listFile">
-                                <a (click)="onDownloadFile(file.linkFile)" class="text-primary">{{file.tenFile}}</a>
+                            <li *ngFor="let file of getForEdit.listFile">
+                                <a (click)="onDownloadFile(file.filePath)" class="text-primary">{{file.fileName}}</a>
                             </li>
                         </ul>
                     </div>
