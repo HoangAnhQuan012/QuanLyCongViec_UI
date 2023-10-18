@@ -53,8 +53,8 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
-  viewWorkReport(workReportId ?: number) {
-    this.showWorkReport(this.id, workReportId, true);
+  viewWorkReport(workReportId ?: number, statusId ?: number) {
+    this.showWorkReport(this.id, workReportId, statusId, true);
   }
 
   createWorkReport(workReportId?: number) {
@@ -79,7 +79,7 @@ export class ProjectDetailsComponent implements OnInit {
     this._router.navigate(['/app/job-management']);
   }
 
-  private showWorkReport(projectId?: number, workReportId ?: number, isView = false) {
+  private showWorkReport(projectId?: number, workReportId ?: number, statusId ?: number, isView = false) {
     let workReport: BsModalRef;
     workReport = this._modalService.show(
       WorkReportComponent,
@@ -88,6 +88,7 @@ export class ProjectDetailsComponent implements OnInit {
         initialState: {
           projectId,
           workReportId,
+          statusId,
           isView
         }
       }

@@ -4,9 +4,12 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/app-component-base';
 import { CommonComponent } from '@shared/components/common.component';
+import { FileDownloadService } from '@shared/file-download.service';
 import { StatusStr } from '@shared/pipes/statusStr.pipe';
-import { CreateWorkReportInputDto, LookupTableDto, WorkReportForViewDto, WorkReportServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateWorkReportInputDto, LookupTableDto, UpdateReportStatusInput, WorkReportAttachedFiles,
+         WorkReportForViewDto, WorkReportServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ConfirmationService, Message } from 'primeng/api';
 import { finalize, forkJoin } from 'rxjs';
 
 @Component({
@@ -35,6 +38,13 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   isView = false;
   workReportDto: any = {};
   getForEdit: WorkReportForViewDto = new WorkReportForViewDto();
+  uploading = false;
+  attachedFile: File[] = [];
+  isApprovedStatus = false;
+  statusId: number;
+  msgs: Message[] = [];
+  workReport: UpdateReportStatusInput = new UpdateReportStatusInput();
+  saveHidden = false;
 
   constructor(
     private injector: Injector,
@@ -42,11 +52,18 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     private fb: FormBuilder,
     private _workReportService: WorkReportServiceProxy,
     private http: HttpClient,
+    private _fileDownloadService: FileDownloadService,
+    private confirmationService: ConfirmationService
   ) {
     super(injector);
    }
 
   ngOnInit() {
+    this.isApprovedStatus = this.statusId === 0;
+    this.saveHidden = this.statusId === 2;
+
+    console.log(this.isApprovedStatus);
+
     this.CreateForm();
     forkJoin(
       this._workReportService.getAllSprint(this.projectId),
@@ -98,6 +115,11 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     });
   }
 
+  isApproved() {
+    // tslint:disable-next-line:no-unused-expression
+    this.isApprovedStatus === true ? 'Approved' : 'Rejected';
+  }
+
   // createItem(): FormGroup {
   //   return this.fb.group({
   //     subJobs: [''],
@@ -136,13 +158,23 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     this.hours = totalHours;
   }
 
-  xoaListFile() {}
+  deleteListFile() {
+    this.attachedFile = [];
+  }
 
-  onSelectAllFile(event) {}
+  onSelectAllFile(event) {
+    this.attachedFile.push(...event.addedFiles);
+  }
 
-  onRemoveAllFile(event) {}
+  onRemoveAllFile(event) {
+    this.attachedFile.splice(this.attachedFile.indexOf(event), 1);
+  }
 
-  onDownloadFile(event) {}
+  onDownloadFile(url) {
+    this._workReportService.downloadFileUpload(url).subscribe(result => {
+      this._fileDownloadService.downloadTempFile(result);
+    });
+  }
 
   save() {
     const pipe = new StatusStr();
@@ -150,8 +182,8 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     this.createWorkReportInput.status = pipe.transform(this.createWorkReportInput.status);
     if (this.isView) {
       this.approvedStatus();
-    }
-    this._workReportService.createOrEditWorkReport(this.createWorkReportInput).pipe(
+    } else {
+      this._workReportService.createOrEditWorkReport(this.createWorkReportInput).pipe(
       finalize(() => {
         this.saving = true;
       })).subscribe(() => {
@@ -165,6 +197,7 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
           this.onSave.emit();
         }
       });
+    }
   }
 
   private getValueForSave() {
@@ -193,7 +226,30 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   }
 
   // tslint:disable-next-line:member-ordering
-  approvedStatus() {}
+  approvedStatus() {
+    this.confirmationService.confirm({
+      message: 'Do you want to update this work report?',
+      header: 'Update Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+          this.msgs = [{severity: 'info', summary: 'Confirmed', detail: 'Record deleted'}];
+          this.workReport.id =  this.getForEdit.id;
+          this.workReport.status = this.getForEdit.statusId;
+          this._workReportService.updateWorkReportStatus(this.workReport).pipe(
+            finalize(() => {
+              this.saving = false;
+            })
+          ).subscribe(() => {
+            this.showUpdateMessage();
+            this.bsModalRef.hide();
+            this.onSave.emit();
+          });
+      },
+      reject: () => {
+          this.msgs = [{severity: 'info', summary: 'Rejected', detail: 'You have rejected'}];
+      }
+    });
+  }
 
   private setValueForEdit() {
     this.formData.controls.sprint.setValue(this.getForEdit.spintName);
@@ -211,6 +267,15 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
       this.http.get(path, { responseType: 'blob' }).subscribe((data) => {
         this.filesAllFile.push(this.blobToFile(data, file.fileName));
       });
+    }
+  }
+
+  private FileProcessing(res) {
+    for (const file of this.attachedFile) {
+      const item = new WorkReportAttachedFiles();
+      item.fileName = file.name;
+      item.filePath = this.getLinkFile(res, file.name);
+      this.getForEdit.listFile.push(item);
     }
   }
 

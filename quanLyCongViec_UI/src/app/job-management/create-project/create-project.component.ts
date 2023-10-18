@@ -10,7 +10,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 import * as models from '@shared/AppModels';
 import { CommonComponent } from '@shared/components/common.component';
-import { split } from 'lodash-es';
 
 const URL = AppConsts.remoteServiceBaseUrl + '/api/Upload/ProjectUpload';
 

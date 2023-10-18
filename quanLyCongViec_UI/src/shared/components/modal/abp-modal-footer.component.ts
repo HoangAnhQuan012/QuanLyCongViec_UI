@@ -21,6 +21,7 @@ export class AbpModalFooterComponent extends AppComponentBase {
   @Input() saveHidden: boolean;
 
   @Output() onCancelClick = new EventEmitter<number>();
+  @Output() onSaveClick = new EventEmitter<number>();
 
   constructor(injector: Injector) {
     super(injector);

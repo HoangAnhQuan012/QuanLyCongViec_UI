@@ -7,7 +7,8 @@
   >
     {{ cancelLabel }}
   </button>
-  <button type="submit" class="btn btn-primary" [disabled]="saveDisabled" [hidden]="saveHidden">
+  <button type="submit" class="btn btn-primary" [disabled]="saveDisabled" [hidden]="saveHidden"
+    (click)="onSaveClick.emit()">
     {{ saveLabel }}
   </button>
 </div>

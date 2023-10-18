@@ -1,4 +1,4 @@
-<form class="form-horizontal" autocomplete="off" [formGroup]="formData" (ngSubmit)="save()">
+<form class="form-horizontal" autocomplete="off" [formGroup]="formData">
   <abp-modal-header [title]="'LogWork'" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
   <!-- <pre>{{ formData.value | json }}</pre> -->
   <div class="modal-body fixed-modal-height-full">
@@ -75,9 +75,9 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <div style="text-align: right;">
+                  <div *ngIf="!isView" class="mt-10" style="text-align: right;">
                     <button type="button" class="btn btn-danger" [disabled]="filesAllFile.length === 0"
-                        (click)="xoaListFile()"><i class="fas fa-trash"></i>
+                        (click)="deleteListFile()"><i class="fas fa-trash"></i>
                         <span style="margin-left: 5px;">Delete all</span></button>
                 </div>
 
@@ -85,7 +85,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Attached files</label>
-                            <ngx-dropzone (change)="onSelectAllFile($event)"
+                            <ngx-dropzone *ngIf="!isView" [disabled]="uploading" (change)="onSelectAllFile($event)"
                                 [multiple]="true" [accept]="typeFileUpload">
                                 <ngx-dropzone-label style="font-size: 13px !important;">Choose file...</ngx-dropzone-label>
                                 <ngx-dropzone-preview *ngFor="let f of filesAllFile"
@@ -95,7 +95,7 @@
                             </ngx-dropzone>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div *ngIf="isView" class="col-md-12">
                         <ul class="list-unstyled">
                             <li *ngFor="let file of demoDto?.listFile">
                                 <a (click)="onDownloadFile(file.linkFile)" class="text-primary">{{file.tenFile}}</a>
@@ -213,6 +213,7 @@
       </div>
     </div>
   </div>
-  <abp-modal-footer [cancelLabel]="'Close'" (onCancelClick)="bsModalRef.hide()" [saveLabel]="'Save'"
-    [saveDisabled]="formData.invalid" [saveHidden]="isView"></abp-modal-footer>
+  <abp-modal-footer [cancelLabel]="'Close'" [saveHidden]="saveHidden" (onCancelClick)="bsModalRef.hide()"
+    [saveLabel]="isView ? (this.isApprovedStatus === true ? 'Approved' : 'Rejected') : 'Save'"
+    [saveDisabled]="formData.invalid" (onSaveClick)="save()"></abp-modal-footer>
 </form>

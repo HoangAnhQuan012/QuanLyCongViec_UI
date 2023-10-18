@@ -50,9 +50,12 @@
                 <td>{{ record.sprineName }}</td>
                 <td>{{ record.moduleName }}</td>
                 <td>{{ record.hours }}</td>
-                <td style="text-align: center;" [ngStyle]="{'background-color': 'orange' ? (record.statusId === 0 ? '#28a745' : 'red') : 'blue'}">{{ record.status }}</td>
+                <td style="text-align: center; color: #fff;"
+                  ><span style="border-radius: 3px;" [ngStyle]="{'background-color': record.statusId === 0 ? 'orange' : (record.statusId === 1 ? '#28a745' : 'red')}">
+                    {{ record.status }}
+                  </span></td>
                 <td style="text-align: center;">
-                  <button class="btn btn-primary mr-5" type="button" (click)="viewWorkReport(record.id)">
+                  <button class="btn btn-primary mr-5" type="button" (click)="viewWorkReport(record.id, record.statusId)">
                     <i class="pi pi-eye"></i>
                   </button>
                   <button class="btn btn-warning mr-5" type="button" (click)="createWorkReport(record.id)">
