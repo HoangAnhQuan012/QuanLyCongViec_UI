@@ -80,8 +80,6 @@ export class AddJobComponent extends AppComponentBase implements OnInit {
   private getValueForSave() {
     this.createJobInput.jobName = this.formData.controls.job.value;
     this.createJobInput.sprintId = this.formData.controls.sprint.value.id;
-    console.log(this.createJobInput.sprintId);
-
   }
 
 }

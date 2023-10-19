@@ -5,7 +5,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { CheckPermissionConst } from '@shared/AppEnums';
 import { AppComponentBase } from '@shared/app-component-base';
 import { FileDownloadService } from '@shared/file-download.service';
-import { CreateProjectUserDto, ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy,
+import { ProjectAttachedFiles, ProjectInputDto, ProjectManagementServiceProxy,
          ProjectUserDto, ProjectsForViewDto, UpdateStatusDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
@@ -200,7 +200,6 @@ export class CreateProjectComponent extends AppComponentBase implements OnInit {
       this.createInputDto.projectUsers.push(projectUser);
     }
     this.createInputDto.note = this.formData.controls.note.value;
-    console.log(this.createInputDto.projectUsers);
 
   }
 

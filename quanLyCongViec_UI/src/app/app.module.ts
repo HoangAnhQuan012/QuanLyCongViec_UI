@@ -47,9 +47,10 @@ import { CreateProjectComponent } from './job-management/create-project/create-p
 import { AddSprintComponent } from './job-management/project-details/add-sprint/add-sprint.component';
 import { AddModuleComponent } from './job-management/project-details/add-module/add-module.component';
 import { AddJobComponent } from './job-management/project-details/add-job/add-job.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
-    declarations: [
+    declarations: [	
         AppComponent,
         HomeComponent,
         AboutComponent,
@@ -83,7 +84,8 @@ import { AddJobComponent } from './job-management/project-details/add-job/add-jo
         WorkReportComponent,
         AddSprintComponent,
         AddModuleComponent,
-        AddJobComponent
+        AddJobComponent,
+      ReportsComponent
    ],
     imports: [
         CommonModule,

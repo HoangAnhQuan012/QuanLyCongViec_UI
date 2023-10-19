@@ -11,6 +11,7 @@ import { ChangePasswordComponent } from './users/change-password/change-password
 import { JobManagementComponent } from './job-management/job-management.component';
 import { ProjectDetailsComponent } from './job-management/project-details/project-details.component';
 import { CreateProjectComponent } from './job-management/create-project/create-project.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
     imports: [
@@ -19,11 +20,13 @@ import { CreateProjectComponent } from './job-management/create-project/create-p
                 path: '',
                 component: AppComponent,
                 children: [
-                    { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
+                    // { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
-                    { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
-                    { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
+                    { path: 'reports', component: ReportsComponent, canActivate: [AppRouteGuard] },
+                    // tslint:disable-next-line:max-line-length
+                    // { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
+                    // { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
                     { path: 'job-management', component: JobManagementComponent,
                         data: { permission: 'Pages.ProjectManager' },

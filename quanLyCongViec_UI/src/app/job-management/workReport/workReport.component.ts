@@ -42,6 +42,7 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   uploading = false;
   isApprovedStatus = false;
   saveHidden = false;
+  projectName = '';
   // SubJobs: FormArray = new FormArray([]);
 
   constructor(
@@ -66,11 +67,13 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
       this._workReportService.getAllModule(this.projectId),
       this._workReportService.getAllKindOfJob(),
       this._workReportService.getAllType(),
-    ).subscribe(([sprint, module, kindOfJob, type]) => {
-      this.sprintItems = sprint;
-      this.moduleItems = module;
-      this.kindOfJobItems = kindOfJob;
-      this.typeItems = type;
+      this._workReportService.getProjectName(this.projectId)
+    ).subscribe(([sprintValue, moduleValue, kindOfJobValue, typeValue, projectName]) => {
+      this.sprintItems = sprintValue;
+      this.moduleItems = moduleValue;
+      this.kindOfJobItems = kindOfJobValue;
+      this.typeItems = typeValue;
+      this.projectName = projectName;
     });
 
     // this.formData.controls.subJobs.valueChanges.subscribe((value): number => {
@@ -86,7 +89,10 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     } else {
       this._workReportService.getForEdit(this.workReportId).subscribe((res) => {
         this.getForEdit = res;
-        this.setValueForEdit();
+        this._workReportService.getAllJobBySprintId(this.getForEdit.sprintId).subscribe((val) => {
+          this.jobItems = val;
+          this.setValueForEdit();
+        });
       });
     }
     if (this.isView) {
@@ -180,6 +186,10 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
       this.getValueForSave();
       this.createWorkReportInput.attachedFiles = [];
       this.FileProcessing(res);
+      if (this.formData.controls.job.value.id === undefined || this.formData.controls.job.value.id === null ||
+        this.formData.controls.job.value.id === 0) {
+          this.createWorkReportInput.jobId = this.getForEdit.jobId;
+      }
       this.createWorkReportInput.status = pipe.transform(this.createWorkReportInput.status);
       if (this.isView) {
         this.approvedStatus();
@@ -209,9 +219,10 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
     this.createWorkReportInput.moduleId = this.formData.controls.module.value.id;
     this.createWorkReportInput.declarationDate = this.formData.controls.declarationDate.value;
     this.createWorkReportInput.jobId = this.formData.controls.job.value.id;
+
     this.createWorkReportInput.kindOfJob = this.formData.controls.kindOfJob.value.id;
     this.createWorkReportInput.type = this.formData.controls.type.value.id;
-    this.createWorkReportInput.onSite = this.formData.controls.onSite.value === '' ? false : true;
+    this.createWorkReportInput.onSite = this.formData.controls.onSite.value;
     this.createWorkReportInput.hours = this.formData.controls.hours.value;
     this.createWorkReportInput.note = this.formData.controls.note.value;
     // const list = this.formData.controls.subJobs.value;
@@ -255,12 +266,24 @@ export class WorkReportComponent extends AppComponentBase implements OnInit {
   }
 
   private setValueForEdit() {
-    this.formData.controls.sprint.setValue(this.getForEdit.spintName);
-    this.formData.controls.module.setValue(this.getForEdit.moduleName);
-    this.formData.controls.declarationDate.setValue(CommonComponent.getDateForEditFromMoment(this.getForEdit.declarationDate));
+    this.formData.controls.sprint.setValue(this.sprintItems.find(
+      x => x.displayName === this.getForEdit.spintName || x.id === this.getForEdit.sprintId
+    ));
+    this.formData.controls.module.setValue(this.moduleItems.find(
+      x => x.displayName === this.getForEdit.moduleName || x.id === this.getForEdit.moduleId
+    ));
+    // this.formData.controls.job.setValue(this.jobItems.find(
+    //   x => x.displayName === this.getForEdit.jobName || x.id === this.getForEdit.jobId
+    // )?.displayName);
     this.formData.controls.job.setValue(this.getForEdit.jobName);
-    this.formData.controls.kindOfJob.setValue(this.getForEdit.kindOfJobName);
-    this.formData.controls.type.setValue(this.getForEdit.typeName);
+
+    this.formData.controls.kindOfJob.setValue(this.kindOfJobItems.find(
+      x => x.displayName === this.getForEdit.kindOfJobName || x.id === this.getForEdit.kindOfJobId
+    ));
+    this.formData.controls.type.setValue(this.typeItems.find(
+      x => x.displayName === this.getForEdit.typeName || x.id === this.getForEdit.typeId
+    ));
+    this.formData.controls.declarationDate.setValue(CommonComponent.getDateForEditFromMoment(this.getForEdit.declarationDate));
     this.formData.controls.onSite.setValue(this.getForEdit.onSite);
     this.formData.controls.hours.setValue(this.getForEdit.hours);
     this.formData.controls.note.setValue(this.getForEdit.note);

@@ -58,7 +58,6 @@ export class ProjectDetailsComponent extends AppComponentBase implements OnInit 
       this.records = result.items;
       this.totalRecords = result.totalCount;
       this.loading = false;
-      console.log(this.records);
     });
   }
 

@@ -52,6 +52,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'Pages.ProjectManager',
             ),
             new MenuItem(
+                this.l('Reports'),
+                '/app/reports',
+                'fas fa-chart-bar',
+                '',
+            ),
+            new MenuItem(
                 this.l('Roles'),
                 '/app/roles',
                 'fas fa-theater-masks',

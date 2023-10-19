@@ -40,6 +40,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
+import {ChartModule} from 'primeng/chart';
 
 @NgModule({
     imports: [
@@ -61,6 +62,7 @@ import {ToastModule} from 'primeng/toast';
         MultiSelectModule,
         ConfirmDialogModule,
         ToastModule,
+        ChartModule,
     ],
     declarations: [
         AbpPaginationControlsComponent,
@@ -98,6 +100,7 @@ import {ToastModule} from 'primeng/toast';
         MultiSelectModule,
         ConfirmDialogModule,
         ToastModule,
+        ChartModule,
     ],
     providers: [FileDownloadService, ConfirmationService, MessageService],
 })
